@@ -12,13 +12,7 @@ class Post(models.Model):
         related_name='posts',
         verbose_name='автор'
     )
-    group = models.ForeignKey(
-        Group,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        verbose_name='группа'
-    )
+    only_for_group = models.BooleanField(verbose_name='только для группы')
     title = models.CharField(max_length=120, verbose_name='название')
     descriptions = models.TextField(verbose_name='описание')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='дата публикации')
