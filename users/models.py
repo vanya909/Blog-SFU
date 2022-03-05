@@ -20,6 +20,7 @@ class User(AbstractUser):
         blank=True,
         verbose_name='аватарка'
     )
+    group = models.ForeignKey(Group, related_name='users')
 
     class Meta:
         verbose_name = 'Пользователь'
