@@ -10,6 +10,9 @@ class Group(models.Model):
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
+    def __str__(self):
+        return self.title
+
 
 class User(AbstractUser):
     image = models.CharField(
@@ -17,13 +20,11 @@ class User(AbstractUser):
         blank=True,
         verbose_name='аватарка'
     )
-    group = models.ForeignKey(
-        Group,
-        related_name='users',
-        verbose_name='группа'
-    )
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.username
 
