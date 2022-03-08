@@ -20,7 +20,7 @@ class User(AbstractUser):
         blank=True,
         verbose_name='аватарка'
     )
-    group = models.ForeignKey(Group, related_name='users')
+    group = models.ForeignKey(Group, related_name='users', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Пользователь'
