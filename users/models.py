@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Group(models.Model):
-    title = models.CharField(verbose_name='название')
+    title = models.CharField(verbose_name='название', max_length=120)
     slug = models.SlugField(unique=True, verbose_name='слаг')
 
     class Meta:

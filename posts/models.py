@@ -14,7 +14,7 @@ class Post(models.Model):
     )
     only_for_group = models.BooleanField(verbose_name='только для группы')
     title = models.CharField(max_length=120, verbose_name='название')
-    descriptions = models.TextField(verbose_name='описание')
+    description = models.TextField(verbose_name='описание')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='дата публикации')
     update_date = models.DateTimeField(auto_now=True, db_index=True, verbose_name='дата обновления')
 
