@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-class Group(models.Model):
+class StudyGroup(models.Model):
     title = models.CharField(verbose_name='название', max_length=120)
     slug = models.SlugField(unique=True, verbose_name='слаг')
 
@@ -20,7 +20,7 @@ class User(AbstractUser):
         blank=True,
         verbose_name='аватарка'
     )
-    group = models.ForeignKey(Group, related_name='users', null=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey(StudyGroup, related_name='users', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -28,4 +28,3 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
