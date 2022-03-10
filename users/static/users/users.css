@@ -1,0 +1,19 @@
+.content {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    border: #FAB216 2px solid;
+    border-radius: 10px;
+    padding: 25px 40px;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.logged-out {
+    color: green;
+}

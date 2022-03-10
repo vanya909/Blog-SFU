@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Logged Out{% endblock title %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'users/users.css' %}">
+    <div class="logged-out">
+        Вы успешно вышли!
+    </div>
+{% endblock content %}
