@@ -10,3 +10,4 @@ class IndexPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
         return context
+

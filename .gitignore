@@ -145,9 +145,8 @@ dmypy.json
 
 .mypy_cache
 
-# папки со статикой и медиа
-yatube/posts/static/
-yatube/media/
+# миграции
+**/migrations/
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
