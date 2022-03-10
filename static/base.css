@@ -1,14 +1,38 @@
-html, body {
-  height: 100%;
+html,
+body {
+    height: 100%;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    font-family:'DINPro-Medium', serif;
+    font-weight:normal;
 }
 
 .content {
-  flex: 1 0 auto;
-  font-size: 16px;
-  margin: 0.5em 1em;
+    flex: 1 0 auto;
+    font-size: 16px;
+    margin: 0.5em 1em;
+}
+
+.navbar-brand {
+    background-color: #E63E11;
+    color: white !important;
+}
+
+.dropdown-item:active {
+    background-color: #FAB216 !important;
+}
+
+.navbar-brand:hover {
+    background-color: #D13C16;
+    transition: background-color 150ms ease-in;
+}
+
+@font-face {
+    font-family: 'DINPro-Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('DINPro-Medium'), url('fonts/DINPro-Medium_13936.woff') format('woff');
 }
