@@ -4,13 +4,13 @@
     justify-content: center;
 }
 
-.form {
-    border: #FAB216 2px solid;
-    border-radius: 10px;
-    padding: 25px 40px;
+.form-su {
+    column-gap: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.form-row {
+.form-su-row {
     margin-bottom: 20px;
 }
 

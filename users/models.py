@@ -4,7 +4,11 @@ from django.contrib.auth.models import AbstractUser
 
 class StudyGroup(models.Model):
     """ Модель учебной группы"""
-    title = models.CharField(verbose_name='название', max_length=120)
+    title = models.CharField(
+        verbose_name='название',
+        max_length=120,
+        unique=True
+    )
     slug = models.SlugField(unique=True, verbose_name='слаг')
 
     class Meta:

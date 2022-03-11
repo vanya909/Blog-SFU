@@ -5,27 +5,27 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'users/users.css' %}">
-    <div class="form">
-    <form method="post"> {% csrf_token %}
-        <div class="form-row">
-        <label for="id_username">Логин</label>
-        {{ form.username }}<br/>
+    <form class="form-su" method="post"> {% csrf_token %}
+        <div class="form-su-row">
+            <input type="text" name="username" maxlength="150" placeholder="Логин"
+                   autocapitalize="none" autocomplete="username"
+                   autofocus="" required="" id="id_username">
         </div>
-        <div class="form-row">
-        <label for="id_email">Электронная почта</label>
-        {{ form.email }}<br/>
+        <div class="form-su-row">
+            <input type="email" name="email" maxlength="254" id="id_email" placeholder="Электронная почта">
         </div>
-        <div class="form-row">
-        <label for="id_group">Группа</label>
-        {{ form.group }}<br/>
+        <div class="form-su-row">
+            <input type="text" name="group" maxlength="150" placeholder="Учебная группа"
+                   autocapitalize="none" autocomplete="off"
+                   autofocus="" required="" id="id_group">
         </div>
-        <div class="form-row">
-        <label for="id_password1">Пароль</label>
-        {{ form.password1 }}<br/>
+        <div class="form-su-row">
+            <input type="password" name="password1" autocomplete="new-password"
+                   required="" id="id_password1" placeholder="Пароль">
         </div>
-        <div class="form-row">
-        <label for="id_password2">Подтверждение пароля</label>
-        {{ form.password2 }}<br/>
+        <div class="form-su-row">
+            <input type="password" name="password2" autocomplete="new-password"
+                   required="" id="id_password2" placeholder="Подтверждение пароля">
         </div>
         {% for field, errors in form.errors.items %}
             {% for error in errors %}
@@ -34,5 +34,4 @@
         {% endfor %}
         <button class="btn btn-outline-success" type="submit">Регистрация</button>
     </form>
-    </div>
 {% endblock content %}
