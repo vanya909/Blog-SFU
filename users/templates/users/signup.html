@@ -6,32 +6,23 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'users/users.css' %}">
     <form class="form-su" method="post"> {% csrf_token %}
-        <div class="form-su-row">
-            <input type="text" name="username" maxlength="150" placeholder="Логин"
-                   autocapitalize="none" autocomplete="username"
-                   autofocus="" required="" id="id_username">
-        </div>
-        <div class="form-su-row">
-            <input type="email" name="email" maxlength="254" id="id_email" placeholder="Электронная почта">
-        </div>
-        <div class="form-su-row">
-            <input type="text" name="group" maxlength="150" placeholder="Учебная группа"
-                   autocapitalize="none" autocomplete="off"
-                   autofocus="" required="" id="id_group">
-        </div>
-        <div class="form-su-row">
-            <input type="password" name="password1" autocomplete="new-password"
-                   required="" id="id_password1" placeholder="Пароль">
-        </div>
-        <div class="form-su-row">
-            <input type="password" name="password2" autocomplete="new-password"
-                   required="" id="id_password2" placeholder="Подтверждение пароля">
-        </div>
+        <input class="form-su-row" type="text" name="username" maxlength="150" placeholder="Логин"
+               autocapitalize="none" autocomplete="username"
+               autofocus="" required="" id="id_username">
+        <input class="form-su-row" type="email" name="email" maxlength="254"
+               id="id_email" placeholder="Электронная почта">
+        <input class="form-su-row" type="text" name="group" maxlength="150" placeholder="Учебная группа"
+               autocapitalize="none" autocomplete="off"
+               autofocus="" required="" id="id_group">
+        <input class="form-su-row" type="password" name="password1" autocomplete="new-password"
+               required="" id="id_password1" placeholder="Пароль">
+        <input class="form-su-row" type="password" name="password2" autocomplete="new-password"
+               required="" id="id_password2" placeholder="Подтверждение пароля">
         {% for field, errors in form.errors.items %}
             {% for error in errors %}
                 <p>{{ error }}</p>
             {% endfor %}
         {% endfor %}
-        <button class="btn btn-outline-success" type="submit">Регистрация</button>
+        <button class="btn btn-outline-success mt-4" type="submit">Регистрация</button>
     </form>
 {% endblock content %}
