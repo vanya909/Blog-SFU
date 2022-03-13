@@ -12,8 +12,8 @@ class StudyGroup(models.Model):
     slug = models.SlugField(unique=True, verbose_name='слаг')
 
     class Meta:
-        verbose_name = 'Группа'
-        verbose_name_plural = 'Группы'
+        verbose_name = 'Учебная группа'
+        verbose_name_plural = 'Учебные группы'
 
     def __str__(self):
         return self.title
