@@ -19,4 +19,8 @@ def signup_view(request):
                 form.add_error('group', 'Такой группы не найдено')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'users/signup.html', context={'form': form})
+    context = {
+        'form': form,
+        'studygroups': StudyGroup.objects.all()
+    }
+    return render(request, 'users/signup.html', context=context)
