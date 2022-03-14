@@ -27,7 +27,6 @@ def signup_view(request):
     return render(request, 'users/signup.html', context=context)
 
 
-@login_required(login_url='users/login')
 def profile_view(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     return render(request, 'users/profile.html', context={'user': user})
