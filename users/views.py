@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.decorators import login_required
 
 from .forms import CustomUserCreationForm
 from .models import StudyGroup
@@ -24,3 +25,9 @@ def signup_view(request):
         'studygroups': StudyGroup.objects.all()
     }
     return render(request, 'users/signup.html', context=context)
+
+
+@login_required(login_url='users/login')
+def profile_view(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
+    return render(request, 'users/profile.html', context={'user': user})

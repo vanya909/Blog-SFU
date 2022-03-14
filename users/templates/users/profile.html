@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }} profile{% endblock title %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'users/users.css' %}">
+    <div class="card">
+        <div class="mt-5 text-center">
+            <h4 class="mb-0">{{ user.username }}</h4> <span class="text-muted d-block mb-2">{{ user.group }}</span>
+            <button class="btn btn-primary btn-sm follow">Подписаться</button>
+            <div class="d-flex justify-content-evenly align-items-center mt-4 px-4">
+                <div class="stats">
+                    <h6 class="mb-0">Подписчики</h6> <span>8,797</span>
+                </div>
+                <div class="stats">
+                    <h6 class="mb-0">Посты</h6> <span>142</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
