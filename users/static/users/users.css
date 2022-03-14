@@ -5,9 +5,8 @@
 }
 
 .form-su {
-    border: #FAB216 solid;
+    border: #FAB216 solid 1px;
     border-radius: 10px;
-    border-width: 1px;
     column-gap: 10px;
     display: flex;
     flex-direction: column;

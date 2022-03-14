@@ -4,7 +4,7 @@
 {#        <a name="post_{{ post.id }}" href="{% url 'profile' post.author.username %}"> #}
           <strong class="d-block text-gray-dark">@{{ post.author }}</strong>
 {#        </a> #}
-        {{ post.text|linebreaksbr }}
+        {{ post.description|linebreaksbr }}
       </p>
 
       {% if post.group %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Записи группы {{group.title}}{% endblock %}
+{% block title %}Посты группы {{group.title}}{% endblock %}
 
 {% block header %}{{group.title}}{% endblock %}
 
@@ -9,5 +9,5 @@
   {% for post in posts %}
       {% include 'posts/post_item.html' with post=post %}
   {% endfor %}
-  </body>
+    </body>
 {% endblock content %}
