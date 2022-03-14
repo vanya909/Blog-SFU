@@ -7,5 +7,5 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.all()
+        context['posts'] = Post.objects.filter(only_for_group=False)
         return context
