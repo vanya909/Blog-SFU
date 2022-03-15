@@ -8,14 +8,19 @@
     <form class="form-su" method="post"> {% csrf_token %}
         <input class="form-su-row" type="text" name="username" maxlength="150" placeholder="Логин"
                autocapitalize="none" autocomplete="username"
-               autofocus="" required="" id="id_username">
+               autofocus="" required="required" id="id_username">
 
         <input class="form-su-row" type="email" name="email" maxlength="254"
-               id="id_email" placeholder="Электронная почта">
+               id="id_email" placeholder="Электронная почта" required="required">
+
+        <input class="form-su-row" type="text" name="first_name"
+               maxlength="150" id="id_first_name" placeholder="Имя" required="required">
+        <input class="form-su-row" type="text" name="last_name"
+               maxlength="150" id="id_last_name" placeholder="Фамилия" required="required">
 
         <input list="study-groups" class="form-su-row" type="text" name="group" maxlength="150"
                placeholder="Учебная группа" autocapitalize="none" autocomplete="off"
-               autofocus="" required="" id="id_group">
+               autofocus="" required="required" id="id_group">
         <datalist id="study-groups">
             {% for group in studygroups %}
                 <option>{{ group.title }}</option>
@@ -23,10 +28,10 @@
         </datalist>
 
         <input class="form-su-row" type="password" name="password1" autocomplete="new-password"
-               required="" id="id_password1" placeholder="Пароль">
+               required="required" id="id_password1" placeholder="Пароль">
 
         <input class="form-su-row" type="password" name="password2" autocomplete="new-password"
-               required="" id="id_password2" placeholder="Подтверждение пароля">
+               required="required" id="id_password2" placeholder="Подтверждение пароля">
 
         {% for field, errors in form.errors.items %}
             {% for error in errors %}

@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
-    path('<str:username>', views.profile_view, name='profile'),
-    path('<str:username/follow>', views.profile_follow, name='profile_follow'),
-    path('<str:username/unfollow>', views.profile_unfollow, name='profile_unfollow'),
+    path('profile/<str:username>/', views.profile_view, name='profile'),
+    path('profile/<str:username>/follow/', views.profile_follow, name='profile_follow'),
+    path('profile/<str:username>/unfollow/', views.profile_unfollow, name='profile_unfollow'),
 ]

@@ -29,10 +29,15 @@ def signup_view(request):
 
 def profile_view(request, username):
     user = get_object_or_404(get_user_model(), username=username)
-    return render(request, 'users/profile.html', context={'user': user})
+    following = user.following.filter(user=request.user.id).exists()
+    context = {
+        'following': following,
+        'profile': user
+    }
+    return render(request, 'users/profile.html', context=context)
 
 
-@login_required
+@login_required(login_url='/users/login')
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
     if author != request.user:
@@ -40,7 +45,7 @@ def profile_follow(request, username):
     return redirect('profile', username=username)
 
 
-@login_required
+@login_required(login_url='/users/login')
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     follower = Follow.objects.filter(user=request.user, author=author)
