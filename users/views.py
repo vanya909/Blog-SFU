@@ -3,7 +3,7 @@ from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 
 from .forms import CustomUserCreationForm
-from .models import StudyGroup
+from .models import StudyGroup, Follow, User
 
 
 def signup_view(request):
@@ -30,3 +30,22 @@ def signup_view(request):
 def profile_view(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     return render(request, 'users/profile.html', context={'user': user})
+
+
+@login_required
+def profile_follow(request, username):
+    author = get_object_or_404(User, username=username)
+    if author != request.user:
+        Follow.objects.get_or_create(user=request.user, author=author)
+    return redirect('profile', username=username)
+
+
+@login_required
+def profile_unfollow(request, username):
+    author = get_object_or_404(User, username=username)
+    follower = Follow.objects.filter(user=request.user, author=author)
+    if follower.exists():
+        if author != request.user:
+            follower.delete()
+    return redirect('profile', username=username)
+
