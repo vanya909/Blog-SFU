@@ -26,7 +26,9 @@ class User(AbstractUser):
     #     blank=True,
     #     verbose_name='аватарка'
     # )
-    group = models.ForeignKey(StudyGroup, related_name='users', null=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey(StudyGroup, related_name='users', verbose_name='Группа', null=True, on_delete=models.SET_NULL)
+    first_name = models.CharField(max_length=120, verbose_name='Имя')
+    second_name = models.CharField(max_length=120, verbose_name='Фамилия')
 
     class Meta:
         verbose_name = 'Пользователь'
