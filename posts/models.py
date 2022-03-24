@@ -24,3 +24,18 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', verbose_name='Комментарий', on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    text = models.TextField()
+    pub_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return f'{self.post}, {self.author} - {self.text[:60]} ({self.pub_date.strftime("%Y-%m-%d %H:%M:%S")})'
