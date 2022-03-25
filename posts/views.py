@@ -46,7 +46,7 @@ def post_edit(request, post_id):
     if post.author != request.user:
         return redirect(
             'post_detail',
-            post_id=post_id
+            pk=post_id
         )
     form = PostCreationForm(
         request.POST or None,
@@ -55,8 +55,8 @@ def post_edit(request, post_id):
     if form.is_valid():
         form.save()
         return redirect(
-            'post_view',
-            post_id=post_id
+            'post_detail',
+            pk=post_id
         )
     context = {
         'author': post.author,
