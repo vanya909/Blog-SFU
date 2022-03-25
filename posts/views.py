@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 
@@ -39,5 +39,30 @@ def create_post(request):
     context = {'form': form}
     return render(request, 'posts/post_create.html', context)
 
+
+@login_required(login_url='/users/login/')
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.author != request.user:
+        return redirect(
+            'post_detail',
+            post_id=post_id
+        )
+    form = PostCreationForm(
+        request.POST or None,
+        instance=post
+    )
+    if form.is_valid():
+        form.save()
+        return redirect(
+            'post_view',
+            post_id=post_id
+        )
+    context = {
+        'author': post.author,
+        'post': post,
+        'form': form,
+    }
+    return render(request, 'posts/post_create.html', context)
 
 
