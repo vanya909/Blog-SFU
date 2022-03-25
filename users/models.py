@@ -42,12 +42,12 @@ class Follow(models.Model):
     """ Модель подписки """
     user = models.ForeignKey(
         User,
-        related_name='follower',
+        related_name='following',
         on_delete=models.CASCADE
     )
     author = models.ForeignKey(
         User,
-        related_name='following',
+        related_name='followers',
         on_delete=models.CASCADE
     )
 

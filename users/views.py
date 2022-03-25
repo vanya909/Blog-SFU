@@ -29,10 +29,14 @@ def signup_view(request):
 
 def profile_view(request, username):
     user = get_object_or_404(get_user_model(), username=username)
-    following = user.following.filter(user=request.user.id).exists()
+    following = user.followers.filter(user=request.user.id).exists()
+    followers_count = user.followers.count()
+    posts_count = user.posts.count()
     context = {
         'following': following,
-        'profile': user
+        'profile': user,
+        'followers_count': followers_count,
+        'posts_count': posts_count
     }
     return render(request, 'users/profile.html', context=context)
 
