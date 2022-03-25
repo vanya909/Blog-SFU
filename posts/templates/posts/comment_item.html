@@ -1,0 +1,7 @@
+<div class="card-body">
+  <p class="card-text">
+    <a href="{% url 'profile' comment.author %}" style="text-decoration: none;">@{{ comment.author }}</a><br/>
+    {{ comment.text|linebreaksbr }}
+  </p>
+    <small class="text-muted">{{ comment.pub_date }}</small>
+</div>

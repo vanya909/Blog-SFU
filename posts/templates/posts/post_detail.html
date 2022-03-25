@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Пост {{ post.title }}{% endblock title %}
+
+{% block content %}
+    {% include 'posts/post_item.html' with post=post %}
+    {% for comment in comments %}
+        {% include 'posts/comment_item.html' with comment=comment %}
+    {% endfor %}
+{% endblock content %}
