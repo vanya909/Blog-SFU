@@ -1,11 +1,14 @@
 <div class="card mb-3 mt-1 shadow-sm">
     <div class="card-body">
-      <p class="card-text">
 {#        <a name="post_{{ post.id }}" href="{% url 'profile' post.author.username %}"> #}
-        <a href="{% url 'profile' post.author %}" style="text-decoration: none;">@{{ post.author }}</a><br/>
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'profile' post.author %}" style="text-decoration: none;">@{{ post.author }}</a>
+            <span class="text-muted">{{ post.author.first_name }} {{ post.author.last_name }} {{ post.author.group }}</span>
+        </div>
 {#        </a> #}
+        <p class="card-text">
         {{ post.description|linebreaksbr }}
-      </p>
+        </p>
 
       {% if post.only_for_group %}
           <strong class="d-block text-gray-dark">#{{ post.author.group.title }}</strong>

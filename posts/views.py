@@ -5,6 +5,7 @@ from django.http import HttpResponseNotFound
 from .models import Post
 from .forms import PostCreationForm
 
+
 def post_detail_view(request, pk):
     post = Post.objects.get(pk=pk)
     if post.only_for_group and post.author != request.user:
@@ -64,5 +65,3 @@ def post_edit(request, post_id):
         'form': form,
     }
     return render(request, 'posts/post_create.html', context)
-
-
