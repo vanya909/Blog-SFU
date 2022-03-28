@@ -1,13 +1,3 @@
-{% extends 'base.html' %}
+{% extends 'posts/posts_list.html' %}
 
-{% block title %}Home{% endblock title %}
-
-{% block content %}
-    {% if posts %}
-        {% for post in posts %}
-            {% include 'posts/post_item.html' with post=post %}
-        {% endfor %}
-    {% else %}
-        Пока нет постов. Вы можете исправить это.
-    {% endif %}
-{% endblock content %}
+{% block title %}Домашняя страница{% endblock title %}

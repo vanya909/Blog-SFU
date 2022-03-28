@@ -1,13 +1,3 @@
-{% extends 'base.html' %}
+{% extends 'posts/posts_list.html' %}
 
-{% block title %}Посты группы {{ user.group.title }}{% endblock %}
-
-{% block header %}{{ user.group.title }}{% endblock %}
-
-{% block content %}
-    <body>
-  {% for post in posts %}
-      {% include 'posts/post_item.html' with post=post %}
-  {% endfor %}
-    </body>
-{% endblock content %}
+{% block title %}Посты группы{% endblock title %}

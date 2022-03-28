@@ -19,9 +19,21 @@ def study_group_posts_view(request):
     posts = Post.objects.filter(only_for_group=True, author__group=user.group)
     context = {
         'user': user,
-        'posts': posts
+        'posts': posts,
     }
     return render(request, 'posts/study_group.html', context)
+
+
+@login_required(login_url='/users/login/')
+def subscriptions_posts_view(request):
+    user = request.user
+    posts_ids = [post.id for subscription in user.following.all() for post in subscription.author.posts.all()]
+    posts = Post.objects.filter(id__in=posts_ids).order_by('-pub_date')
+    context = {
+        'user': user,
+        'posts': posts,
+    }
+    return render(request, 'posts/subscriptions_posts.html', context)
 
 
 @login_required(login_url='/users/login/')
