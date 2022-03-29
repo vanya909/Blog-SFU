@@ -5,6 +5,6 @@
 {% block content %}
     <form method="post"> {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-outline-primary" type="submit">{% block button %}Создать{% endblock button %}</button>
+        <button class="btn btn-outline-primary" type="submit">{% block button %}Создать пост{% endblock button %}</button>
     </form>
 {% endblock content %}

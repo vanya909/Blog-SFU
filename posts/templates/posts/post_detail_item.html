@@ -1,0 +1,5 @@
+{% extends 'posts/post_item.html' %}
+
+{% block post_button %}
+<a class="btn btn-primary" href="{% url 'comment_create' post_pk=post.pk %}">Оставить комментарий</a>
+{% endblock post_button %}

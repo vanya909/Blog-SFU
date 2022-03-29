@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 
 from .models import Post
-from .forms import PostCreationForm
+from .forms import PostCreationForm, CommentCreationForm
 
 
 def post_detail_view(request, pk):
@@ -37,7 +37,7 @@ def subscriptions_posts_view(request):
 
 
 @login_required(login_url='/users/login/')
-def create_post(request):
+def post_create_view(request):
     form = PostCreationForm(
         request.POST or None,
         files=request.FILES or None
@@ -54,7 +54,7 @@ def create_post(request):
 
 
 @login_required(login_url='/users/login/')
-def post_edit(request, post_id):
+def post_edit_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if post.author != request.user:
         return redirect(
@@ -77,3 +77,17 @@ def post_edit(request, post_id):
         'form': form,
     }
     return render(request, 'posts/post_create.html', context)
+
+
+def comment_create_view(request, post_pk):
+    if request.method == 'POST':
+        form = CommentCreationForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = get_object_or_404(Post, pk=post_pk)
+            comment.save()
+            return redirect('post_detail', pk=post_pk)
+    form = CommentCreationForm()
+    context = {'form': form}
+    return render(request, 'posts/comment_create.html', context)
