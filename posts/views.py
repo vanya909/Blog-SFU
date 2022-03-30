@@ -79,6 +79,7 @@ def post_edit_view(request, post_id):
     return render(request, 'posts/post_create.html', context)
 
 
+@login_required(login_url='/users/login/')
 def comment_create_view(request, post_pk):
     if request.method == 'POST':
         form = CommentCreationForm(request.POST)
