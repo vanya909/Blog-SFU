@@ -1,0 +1,16 @@
+.create {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.another {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+}
+.group {
+    align-items: center;
+    display: flex;
+}
