@@ -1,11 +1,14 @@
-from django.views.generic import TemplateView
+from django.shortcuts import render
+from django.conf import settings
+
 from posts.models import Post
+from posts.views import get_objects_on_page
 
 
-class IndexPageView(TemplateView):
-    template_name = 'pages/index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(only_for_group=False)
-        return context
+def index_view(request):
+    posts = get_objects_on_page(
+        request=request,
+        all_objects_list=Post.objects.filter(only_for_group=False),
+        page_capacity=settings.MAX_POSTS_PER_PAGE
+    )
+    return render(request, 'pages/index.html', context={'posts': posts})

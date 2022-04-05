@@ -1,13 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{% endblock title %}
 
 {% block content %}
-  {% if posts %}
+    <link rel="stylesheet" href="{% static 'posts/posts.css' %}">
+    {% if posts %}
         {% for post in posts %}
             {% include 'posts/post_item.html' with post=post %}
         {% endfor %}
+
+        <div class="paginator">
+            {% if posts.has_previous %}
+                <div>
+                <a class="btn btn-outline-primary" href="?page=1">&laquo;</a>
+                <a class="btn btn-outline-primary" href="?page={{ posts.previous_page_number }}">&lt;</a>
+                </div>
+            {% else %}
+                <div>
+                <a class="btn btn-outline-secondary disabled" href="">&laquo;</a>
+                <a class="btn btn-outline-secondary disabled" href="">&lt;</a>
+                </div>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ posts.number }} из {{ posts.paginator.num_pages }}
+            </span>
+
+            {% if posts.has_next %}
+                <div>
+                <a class="btn btn-outline-primary" href="?page={{ posts.next_page_number }}">&gt;</a>
+                <a class="btn btn-outline-primary" href="?page={{ posts.paginator.num_pages }}">&raquo;</a>
+                </div>
+            {% else %}
+                <div>
+                <a class="btn btn-outline-secondary disabled" href="">&gt;</a>
+                <a class="btn btn-outline-secondary disabled" href="">&raquo;</a>
+                </div>
+            {% endif %}
+        </div>
     {% else %}
         Пока нет постов. Вы можете исправить это.
     {% endif %}
+
 {% endblock content %}

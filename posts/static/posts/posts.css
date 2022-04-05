@@ -14,3 +14,12 @@
     align-items: center;
     display: flex;
 }
+.paginator {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.current {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}

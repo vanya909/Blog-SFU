@@ -137,3 +137,5 @@ STATIC_ROOT = BASE_DIR/'static-media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'index'
+
+MAX_POSTS_PER_PAGE = 5
