@@ -15,9 +15,11 @@
       {% endif %}
 
       <div class="d-flex justify-content-between align-items-center">
-        {% block post_button %}
-        <a class="btn btn-outline-primary" href="{% url 'post_detail' pk=post.pk %}">Перейти к посту</a>
-        {% endblock post_button %}
+        <div class="btn-group">
+            {% block post_button %}
+            <a class="btn btn-outline-primary" href="{% url 'post_detail' pk=post.pk %}">Перейти к посту</a>
+            {% endblock post_button %}
+        </div>
         <div class="btn-group">
 {#           {% if user == post.author %}#}
 {#            <a class="btn btn-sm btn-info" href="{% url 'post_edit' post.author.username post.id %}" role="button">#}

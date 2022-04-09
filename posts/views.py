@@ -68,12 +68,12 @@ def post_create_view(request):
 
 
 @login_required(login_url='/users/login/')
-def post_edit_view(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def post_edit_view(request, post_pk):
+    post = get_object_or_404(Post, id=post_pk)
     if post.author != request.user:
         return redirect(
             'post_detail',
-            pk=post_id
+            pk=post_pk
         )
     form = PostCreationForm(
         request.POST or None,
@@ -83,7 +83,7 @@ def post_edit_view(request, post_id):
         form.save()
         return redirect(
             'post_detail',
-            pk=post_id
+            pk=post_pk
         )
     context = {
         'author': post.author,
@@ -91,6 +91,17 @@ def post_edit_view(request, post_id):
         'form': form,
     }
     return render(request, 'posts/post_create.html', context)
+
+
+@login_required(login_url='/users/login/')
+def post_delete_view(request, post_pk):
+    post = get_object_or_404(Post, id=post_pk)
+    if post.author != request.user:
+        return HttpResponseNotFound()
+    if request.method == 'POST':
+        post.delete()
+        return redirect('/')
+    return render(request, 'posts/post_delete.html', {'pk': post_pk})
 
 
 @login_required(login_url='/users/login/')
