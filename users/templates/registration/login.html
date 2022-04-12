@@ -14,6 +14,10 @@
     <input class="form-su-row" type="password" name="password" placeholder="Пароль"
            autocomplete="current-password" required="" id="id_password">
 
+    {% if form.errors %}
+        <p>Логин или пароль введены неверно</p>
+    {% endif %}
+
     <button class="btn btn-outline-success mt-4" type="submit">Войти</button>
   </form>
 {% endblock content %}
