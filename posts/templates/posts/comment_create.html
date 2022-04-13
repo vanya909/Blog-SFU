@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'posts/posts.css' %}">
     <form method="post"> {% csrf_token %}
         <div class="create">
-            <textarea name="description" cols="40" rows="7" required="" id="id_text" placeholder="Комментарий"></textarea>
+            <textarea name="text" cols="40" rows="7" required="" id="id_text" placeholder="Комментарий"></textarea>
             <div class="another">
                 <button class="btn btn-outline-primary" type="submit">Оставить комментарий</button>
             </div>
