@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from django.conf import settings
 
-from .models import Post
+from .models import Post, Comment
 from .forms import PostCreationForm, CommentCreationForm
 
 
@@ -117,6 +117,17 @@ def comment_create_view(request, post_pk):
     form = CommentCreationForm()
     context = {'form': form}
     return render(request, 'posts/comment_create.html', context)
+
+
+@login_required(login_url='/users/login/')
+def comment_delete_view(request, post_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.user != comment.author:
+        return HttpResponseNotFound()
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('post_detail', pk=post_pk)
+    return render(request, 'posts/comment_delete.html')
 
 
 def get_objects_on_page(request, all_objects_list, page_capacity):

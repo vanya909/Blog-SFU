@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление комментария{% endblock title %}
+
+{% block content %}
+    Вы действительно хотите удалить комментарий?
+    <form method="post"> {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Удалить</button>
+    </form>
+{% endblock content %}
