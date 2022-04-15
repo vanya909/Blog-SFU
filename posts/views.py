@@ -39,7 +39,7 @@ def subscriptions_posts_view(request):
 
     posts = get_objects_on_page(
         request=request,
-        all_objects_list=Post.objects.filter(id__in=posts_ids).order_by('-pub_date'),
+        all_objects_list=Post.objects.filter(id__in=posts_ids).filter(only_for_group=False).order_by('-pub_date'),
         page_capacity=settings.MAX_POSTS_PER_PAGE
     )
 
