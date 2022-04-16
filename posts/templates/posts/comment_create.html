@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Создание поста{% endblock title %}
+{% block title %}Создание комментария{% endblock title %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'posts/posts.css' %}">
@@ -9,7 +9,7 @@
         <div class="create">
             <textarea name="text" cols="40" rows="7" required="" id="id_text" placeholder="Комментарий"></textarea>
             <div class="another">
-                <button class="btn btn-outline-primary" type="submit">Оставить комментарий</button>
+                <button class="btn btn-outline-primary" type="submit">{% block button %}Оставить комментарий{% endblock button %}</button>
             </div>
         </div>
     </form>

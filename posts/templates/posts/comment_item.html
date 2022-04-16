@@ -5,6 +5,9 @@
   </p>
     <small class="text-muted">{{ comment.pub_date }}</small>
     {% if user == comment.author %}
+        <a class="btn btn-outline-primary btn-sm ms-2 mb-3" href="{% url 'comment_edit' post_pk=comment.post.pk comment_pk=comment.pk %}">
+            Редактировать
+        </a>
         <a class="btn btn-outline-danger btn-sm ms-2 mb-3" href="{% url 'comment_delete' post_pk=comment.post.pk comment_pk=comment.pk %}">
             Удалить
         </a>

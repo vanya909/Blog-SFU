@@ -83,7 +83,7 @@ def post_edit_view(request, post_pk):
         form.save()
         return redirect(
             'post_detail',
-            pk=post_pk
+             pk=post_pk
         )
     context = {
         'author': post.author,
@@ -117,6 +117,19 @@ def comment_create_view(request, post_pk):
     form = CommentCreationForm()
     context = {'form': form}
     return render(request, 'posts/comment_create.html', context)
+
+
+@login_required(login_url='/users/login/')
+def comment_edit_view(request, post_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.user != comment.author:
+        return HttpResponseNotFound()
+    if request.method == 'POST':
+        form = CommentCreationForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', pk=post_pk)
+    return render(request, 'posts/comment_edit.html')
 
 
 @login_required(login_url='/users/login/')
