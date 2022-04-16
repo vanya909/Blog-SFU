@@ -1,2 +1,2 @@
 # University project "Blog SFU"
-![django workflow](https://github.com/vanya909/Blog-SFU/actions/workflows/django.yml/badge.svg)
+[![Django CI](https://github.com/vanya909/Blog-SFU/actions/workflows/django.yml/badge.svg)](https://github.com/vanya909/Blog-SFU/actions/workflows/django.yml)
