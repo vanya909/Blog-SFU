@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 
 
 class StudyGroup(models.Model):
-    """ Модель учебной группы"""
     title = models.CharField(
         verbose_name='название',
         max_length=120,
@@ -20,13 +19,13 @@ class StudyGroup(models.Model):
 
 
 class User(AbstractUser):
-    """ Модель пользователя """
-    # image = models.CharField(
-    #     max_length=200,
-    #     blank=True,
-    #     verbose_name='аватарка'
-    # )
-    group = models.ForeignKey(StudyGroup, related_name='users', verbose_name='Группа', null=True, on_delete=models.SET_NULL)
+    group = models.ForeignKey(
+        StudyGroup,
+        related_name='users',
+        verbose_name='Группа',
+        null=True,
+        on_delete=models.SET_NULL
+    )
     first_name = models.CharField(max_length=120, verbose_name='Имя')
     second_name = models.CharField(max_length=120, verbose_name='Фамилия')
 
@@ -39,7 +38,6 @@ class User(AbstractUser):
 
 
 class Follow(models.Model):
-    """ Модель подписки """
     user = models.ForeignKey(
         User,
         related_name='following',

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Registration{% endblock title %}
+{% block title %}Регистрация{% endblock title %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'users/users.css' %}">
@@ -15,6 +15,7 @@
 
         <input class="form-su-row" type="text" name="first_name"
                maxlength="150" id="id_first_name" placeholder="Имя" required="required">
+
         <input class="form-su-row" type="text" name="last_name"
                maxlength="150" id="id_last_name" placeholder="Фамилия" required="required">
 

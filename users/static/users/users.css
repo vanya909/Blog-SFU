@@ -34,10 +34,6 @@
     height: 370px
 }
 
-.upper {
-    height: 100px
-}
-
 .upper img {
     width: 100%;
     border-top-left-radius: 10px;
@@ -52,16 +48,6 @@
     height: 80px;
     width: 80px;
     margin-top: 2px
-}
-
-.profile {
-    position: absolute;
-    top: -50px;
-    left: 38%;
-    height: 90px;
-    width: 90px;
-    border: 3px solid #fff;
-    border-radius: 50%
 }
 
 .follow {

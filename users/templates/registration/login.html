@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Log In{% endblock title %}
+{% block title %}Войти{% endblock title %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'users/users.css' %}">
-  <form class="form-su" method="post"> {% csrf_token %}
+    <link rel="stylesheet" href="{% static 'users/users.css' %}">
+    <form class="form-su" method="post"> {% csrf_token %}
+        <input class="form-su-row" type="text" name="username" placeholder="Логин"
+               autofocus="" autocapitalize="none" autocomplete="username"
+               maxlength="150" required="" id="id_username">
 
-    <input class="form-su-row" type="text" name="username" placeholder="Логин"
-           autofocus="" autocapitalize="none" autocomplete="username"
-           maxlength="150" required="" id="id_username">
+        <input class="form-su-row" type="password" name="password" placeholder="Пароль"
+               autocomplete="current-password" required="" id="id_password">
 
-    <input class="form-su-row" type="password" name="password" placeholder="Пароль"
-           autocomplete="current-password" required="" id="id_password">
+        {% if form.errors %}
+            <p>Логин или пароль введены неверно</p>
+        {% endif %}
 
-    {% if form.errors %}
-        <p>Логин или пароль введены неверно</p>
-    {% endif %}
-
-    <button class="btn btn-outline-success mt-4" type="submit">Войти</button>
-  </form>
+        <button class="btn btn-outline-success mt-4" type="submit">Войти</button>
+    </form>
 {% endblock content %}

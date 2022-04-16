@@ -3,8 +3,8 @@
 {% block title %}Пост {{ post.title }}{% endblock title %}
 
 {% block content %}
-    {% include 'posts/post_detail_item.html' with post=post %}
+    {% include 'posts/post_templates/post_detail_item.html' with post=post %}
     {% for comment in comments %}
-        {% include 'posts/comment_item.html' with comment=comment %}
+        {% include 'posts/comment_templates/comment_item.html' with comment=comment %}
     {% endfor %}
 {% endblock content %}

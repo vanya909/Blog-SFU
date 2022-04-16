@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 
 
 class Post(models.Model):
-    """ Модель поста """
     author = models.ForeignKey(
         get_user_model(),
         null=True,

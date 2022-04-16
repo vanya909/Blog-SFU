@@ -57,4 +57,3 @@ def profile_unfollow(request, username):
         if author != request.user:
             follower.delete()
     return redirect('profile', username=username)
-

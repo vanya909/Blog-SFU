@@ -12,7 +12,7 @@ def post_detail_view(request, pk):
     post = Post.objects.get(pk=pk)
     if post.only_for_group and post.author != request.user:
         return HttpResponseNotFound()
-    return render(request, 'posts/post_detail.html', {'post': post, 'comments': post.comments.all()})
+    return render(request, 'posts/post_templates/post_detail.html', {'post': post, 'comments': post.comments.all()})
 
 
 @login_required(login_url='/users/login/')
@@ -64,7 +64,7 @@ def post_create_view(request):
         return redirect('index')
     form = PostCreationForm()
     context = {'form': form}
-    return render(request, 'posts/post_create.html', context)
+    return render(request, 'posts/post_templates/post_create.html', context)
 
 
 @login_required(login_url='/users/login/')
@@ -83,14 +83,14 @@ def post_edit_view(request, post_pk):
         form.save()
         return redirect(
             'post_detail',
-             pk=post_pk
+            pk=post_pk
         )
     context = {
         'author': post.author,
         'post': post,
         'form': form,
     }
-    return render(request, 'posts/post_create.html', context)
+    return render(request, 'posts/post_templates/post_create.html', context)
 
 
 @login_required(login_url='/users/login/')
@@ -101,7 +101,7 @@ def post_delete_view(request, post_pk):
     if request.method == 'POST':
         post.delete()
         return redirect('/')
-    return render(request, 'posts/post_delete.html', {'pk': post_pk})
+    return render(request, 'posts/post_templates/post_delete.html', {'pk': post_pk})
 
 
 @login_required(login_url='/users/login/')
@@ -116,7 +116,7 @@ def comment_create_view(request, post_pk):
             return redirect('post_detail', pk=post_pk)
     form = CommentCreationForm()
     context = {'form': form}
-    return render(request, 'posts/comment_create.html', context)
+    return render(request, 'posts/comment_templates/comment_create.html', context)
 
 
 @login_required(login_url='/users/login/')
@@ -129,7 +129,7 @@ def comment_edit_view(request, post_pk, comment_pk):
         if form.is_valid():
             form.save()
             return redirect('post_detail', pk=post_pk)
-    return render(request, 'posts/comment_edit.html')
+    return render(request, 'posts/comment_templates/comment_edit.html')
 
 
 @login_required(login_url='/users/login/')
@@ -140,7 +140,7 @@ def comment_delete_view(request, post_pk, comment_pk):
     if request.method == 'POST':
         comment.delete()
         return redirect('post_detail', pk=post_pk)
-    return render(request, 'posts/comment_delete.html')
+    return render(request, 'posts/comment_templates/comment_delete.html')
 
 
 def get_objects_on_page(request, all_objects_list, page_capacity):

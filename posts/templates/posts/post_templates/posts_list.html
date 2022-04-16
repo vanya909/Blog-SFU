@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'posts/posts.css' %}">
     {% if posts %}
         {% for post in posts %}
-            {% include 'posts/post_item.html' with post=post %}
+            {% include 'posts/post_templates/post_item.html' with post=post %}
         {% endfor %}
 
         <div class="paginator">

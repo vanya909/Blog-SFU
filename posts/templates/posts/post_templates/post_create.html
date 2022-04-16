@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="{% static 'posts/posts.css' %}">
     <form method="post"> {% csrf_token %}
         <div class="create">
-            <textarea name="description" cols="40" rows="10" required="" id="id_description" placeholder="Содержание"></textarea>
+            <textarea name="description" cols="40" rows="10"
+                      required="" id="id_description" placeholder="Содержание"></textarea>
             <div class="another">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="only_for_group" id="id_only_for_group">
                     <label class="form-check-label" for="id_only_for_group">Только для группы</label>
                 </div>
-                <button class="btn btn-outline-primary" type="submit">Создать пост</button>
+                <button class="btn btn-outline-primary" type="submit">
+                    {% block button %}Создать пост{% endblock button %}
+                </button>
             </div>
         </div>
     </form>

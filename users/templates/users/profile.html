@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ profile.username }} profile{% endblock title %}
+{% block title %}{{ profile.username }} профиль{% endblock title %}
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'users/users.css' %}">
     <div class="card">
         <div class="mt-5 text-center">
-            <h4 class="mb-0">{{ profile.username }}</h4> <span class="text-muted d-block mb-2">{{ profile.group }}</span>
+            <h4 class="mb-0">{{ profile.username }}</h4>
+            <span class="text-muted d-block mb-2">{{ profile.group }}</span>
             {% if user.username != profile.username %}
                 {% if following %}
-                    <a class="btn btn-secondary btn-sm follow" href="{% url 'profile_unfollow' profile.username %}">Отписаться</a>
+                    <a class="btn btn-secondary btn-sm follow" href="{% url 'profile_unfollow' profile.username %}">
+                        Отписаться
+                    </a>
                 {% else %}
-                    <a class="btn btn-primary btn-sm follow" href="{% url 'profile_follow' profile.username %}">Подписаться</a>
+                    <a class="btn btn-primary btn-sm follow" href="{% url 'profile_follow' profile.username %}">
+                        Подписаться
+                    </a>
                 {% endif %}
             {% endif %}
             <div class="d-flex justify-content-evenly align-items-center mt-4 px-4">
