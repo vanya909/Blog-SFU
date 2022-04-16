@@ -38,3 +38,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.post}, {self.author} - {self.text[:60]} ({self.pub_date.strftime("%Y-%m-%d %H:%M:%S")})'
+
+
+class LikeAndDislike(models.Model):
+    like_count = models.IntegerField()
+    dislike_count = models.IntegerField()
+    post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='likes_and_dislikes')
+
+    class Meta:
+        verbose_name = 'Лайки и дизлайки'
+        verbose_name_plural = 'Лайки и дизлайки'

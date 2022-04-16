@@ -146,3 +146,23 @@ def comment_delete_view(request, post_pk, comment_pk):
 def get_objects_on_page(request, all_objects_list, page_capacity):
     paginator = Paginator(all_objects_list, page_capacity)
     return paginator.get_page(request.GET.get('page'))
+
+
+@login_required(login_url='/users/login/')
+def like_view(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.method == 'POST':
+        post.likes_and_dislikes.like_count += 1
+    if request.method == 'DELETE' and post.likes_and_dislikes.like_count > 0:
+        post.likes_and_dislikes.like_count -= 1
+    return redirect('post_detail', pk=post_pk)
+
+
+@login_required(login_url='/users/login/')
+def dislike_view(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.method == 'POST':
+        post.likes_and_dislikes.dislike_count += 1
+    if request.method == 'DELETE' and post.likes_and_dislikes.dislike_count > 0:
+        post.likes_and_dislikes.dislike_count -= 1
+    return redirect('post_detail', pk=post_pk)
