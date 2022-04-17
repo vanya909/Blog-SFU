@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from django.conf import settings
 
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from .forms import PostCreationForm, CommentCreationForm
 
 
@@ -152,17 +152,6 @@ def comment_delete_view(request, post_pk, comment_pk):
 def like_view(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == 'POST':
-        post.likes_and_dislikes.like_count += 1
-    if request.method == 'DELETE' and post.likes_and_dislikes.like_count > 0:
-        post.likes_and_dislikes.like_count -= 1
-    return redirect('post_detail', pk=post_pk)
-
-
-@login_required(login_url='/users/login/')
-def dislike_view(request, post_pk):
-    post = get_object_or_404(Post, pk=post_pk)
-    if request.method == 'POST':
-        post.likes_and_dislikes.dislike_count += 1
-    if request.method == 'DELETE' and post.likes_and_dislikes.dislike_count > 0:
-        post.likes_and_dislikes.dislike_count -= 1
-    return redirect('post_detail', pk=post_pk)
+        Like.objects.get_or_create(user=request.user, post=post)[0].like = \
+            not Like.objects.get_or_create(user=request.user, post=post)[0].like
+    return redirect(request.META.get('HTTP_REFERER'))

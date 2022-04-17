@@ -40,11 +40,11 @@ class Comment(models.Model):
         return f'{self.post}, {self.author} - {self.text[:60]} ({self.pub_date.strftime("%Y-%m-%d %H:%M:%S")})'
 
 
-class LikeAndDislike(models.Model):
-    like_count = models.IntegerField()
-    dislike_count = models.IntegerField()
-    post = models.OneToOneField(Post, on_delete=models.CASCADE, related_name='likes_and_dislikes')
+class Like(models.Model):
+    like = models.BooleanField(null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Лайки и дизлайки'
-        verbose_name_plural = 'Лайки и дизлайки'
+        verbose_name = 'Лайк'
+        verbose_name_plural = 'Лайки'
