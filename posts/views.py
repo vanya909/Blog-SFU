@@ -151,7 +151,10 @@ def comment_delete_view(request, post_pk, comment_pk):
 @login_required(login_url='/users/login/')
 def like_view(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
-    if request.method == 'POST':
-        Like.objects.get_or_create(user=request.user, post=post)[0].like = \
-            not Like.objects.get_or_create(user=request.user, post=post)[0].like
+
+    if not Like.objects.filter(user=request.user, post=post).exists():
+        Like.objects.create(user=request.user, post=post)
+    else:
+        Like.objects.filter(user=request.user, post=post).delete()
+
     return redirect(request.META.get('HTTP_REFERER'))

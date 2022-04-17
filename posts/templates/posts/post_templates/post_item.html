@@ -17,13 +17,16 @@
         {% endif %}
 
         <div class="d-flex justify-content-between align-items-center">
-          <div class="btn-group">
-              {% block post_button %}
-                  <a class="btn btn-outline-primary" href="{% url 'post_detail' pk=post.pk %}">Перейти к посту</a>
-              {% endblock post_button %}
-          </div>
-          <small class="text-muted">{{ post.pub_date }}</small>
+            <div class="btn-group">
+                <a class="btn btn-outline-danger me-2" href="{% url 'like' post_pk=post.pk %}">
+                    {{ post.likes.count }} &#10084;
+                </a>
+                {% block post_button %}
+                    <a class="btn btn-outline-primary" href="{% url 'post_detail' pk=post.pk %}">Перейти к посту</a>
+                {% endblock post_button %}
+            </div>
+            <small class="text-muted">{{ post.pub_date }}</small>
         </div>
 
     </div>
-  </div>
+</div>

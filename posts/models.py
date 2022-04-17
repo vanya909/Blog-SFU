@@ -22,7 +22,7 @@ class Post(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        return self.title
+        return f"{self.description} - {self.author}"
 
 
 class Comment(models.Model):
@@ -41,10 +41,12 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    like = models.BooleanField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
+
+    def __str__(self):
+        return f"{self.user} - {self.post}"
