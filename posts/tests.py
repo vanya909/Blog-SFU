@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
-from users.models import StudyGroup
+from users.models import StudyGroup, Follow
 from .models import Post
 
 
@@ -24,7 +24,7 @@ class PostDetailViewTest(TestCase):
         self.client.login(username='firstuser', password='12345678')
 
     def test_post_detail_status_code(self):
-        """Test post detail page status code is 200"""
+        """Test page status code is 200"""
         post = Post.objects.create(
             author=self.first_user,
             only_for_group=False,
@@ -33,10 +33,10 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(f'/posts/{post.pk}/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, "Detail page status code isn't 200")
 
     def test_post_detail_status_code_reverse_lazy(self):
-        """Test post detail page status code using reverse_lazy() is 200"""
+        """Test page status code using reverse_lazy() is 200"""
         post = Post.objects.create(
             author=self.first_user,
             only_for_group=False,
@@ -45,7 +45,7 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': post.pk}))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, "Detail page status code using reverse_lazy() isn't 200")
 
     def test_own_group_post_detail_status_code(self):
         """Test own group post detail page status code is 200"""
@@ -57,7 +57,7 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': own_group_post.pk}))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, "Own group post's detail page status code isn't 200")
 
     def test_another_group_post_detail_status_code(self):
         """Test another group post detail page status code is not 200"""
@@ -69,7 +69,7 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': another_group_post.pk}))
-        self.assertNotEqual(response.status_code, 200)
+        self.assertNotEqual(response.status_code, 200, "Another group post's detail page status code is 200")
 
 
 class StudyGroupPostsViewTest(TestCase):
@@ -78,46 +78,115 @@ class StudyGroupPostsViewTest(TestCase):
     def setUp(self):
         """Create test user"""
         self.test_user = get_test_user(username='testuser', password='12345678', group_title='ABC')
+        self.client.login(username='testuser', password='12345678')
 
     def test_study_group_posts_status_code(self):
-        """Test study group posts status code is 200"""
-        post = Post.objects.create(
-            author=self.test_user,
-            only_for_group=True,
-            title='SimpleTitle',
-            description='SimpleDescription',
-        )
-        self.client.login(username='testuser', password='12345678')
+        """Test page status code is 200"""
 
         response = self.client.get('/posts/group/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, "Study group posts page status code isn't 200")
 
     def test_study_group_posts_status_code_reverse_lazy(self):
-        """Test post detail page status code using reverse_lazy() is 200"""
-        post = Post.objects.create(
-            author=self.test_user,
-            only_for_group=False,
-            title='SimpleTitle',
-            description='SimpleDescription',
-        )
-        self.client.login(username='testuser', password='12345678')
+        """Test page status code using reverse_lazy() is 200"""
 
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, "Study group posts page status code using reverse_lazy() isn't 200")
 
     def test_study_group_posts_status_code_with_and_without_login(self):
-        """Test study group posts status code is 200 when logged in and isn't 200 when not"""
-        post = Post.objects.create(
+        """Test page status code is 200 when logged in and isn't 200 when not"""
+
+        response = self.client.get(reverse_lazy('study_group_posts'))
+        self.assertEqual(response.status_code, 200, "Study group posts page status code isn't 200 when logged in")
+
+        self.client.logout()
+
+        response = self.client.get(reverse_lazy('study_group_posts'))
+        self.assertNotEqual(response.status_code, 200, "Study group posts page status code is 200 when logged out")
+
+    def test_content_on_study_group_posts_page(self):
+        """Test group post is on the page and public post is not"""
+        group_post = Post.objects.create(
             author=self.test_user,
             only_for_group=True,
-            title='SimpleTitle',
-            description='SimpleDescription',
+            title='Title',
+            description='Description'
+        )
+        public_post = Post.objects.create(
+            author=self.test_user,
+            only_for_group=False,
+            title='Title',
+            description='Description'
         )
 
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertNotEqual(response.status_code, 200)
+        self.assertIn(group_post, response.context['posts'], "Group post isn't in the study group page's context")
+        self.assertNotIn(public_post, response.context['posts'], "Public post is in the study group page's context")
 
-        self.client.login(username='testuser', password='12345678')
 
-        response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertEqual(response.status_code, 200)
+class SubscriptionsPostsViewTest(TestCase):
+    """Test subscriptions page"""
+
+    def setUp(self):
+        """Create test users and subscription"""
+        self.main_user = get_test_user(username='mainuser', password='12345678', group_title='ABC')
+        self.first_user = get_test_user(username='firstuser', password='12345678', group_title='ABC')
+        self.second_user = get_test_user(username='seconduser', password='12345678', group_title='ABC')
+
+        Follow.objects.create(user=self.main_user, author=self.first_user)
+
+        self.client.login(username='mainuser', password='12345678')
+
+    def test_subscriptions_status_code(self):
+        """Test page status code is 200"""
+
+        response = self.client.get('/posts/subscriptions/')
+        self.assertEqual(response.status_code, 200, "Subscriptions page status code isn't 200")
+
+    def test_subscriptions_status_code_reverse_lazy(self):
+        """Test page status code using reverse_lazy() is 200"""
+
+        response = self.client.get(reverse_lazy('subscriptions_posts'))
+        self.assertEqual(response.status_code, 200, "Subscriptions page status code using reverse_lazy() isn't 200")
+
+    def test_subscriptions_status_code_with_and_without_login(self):
+        """Test page status code is 200 when logged in and isn't 200 when not"""
+
+        response = self.client.get(reverse_lazy('subscriptions_posts'))
+        self.assertEqual(response.status_code, 200, "Subscriptions page status code isn't 200 when logged in")
+
+        self.client.logout()
+
+        response = self.client.get(reverse_lazy('subscriptions_posts'))
+        self.assertNotEqual(response.status_code, 200, "Subscriptions page status code is 200 when logged out")
+
+    def test_content_on_subscriptions_page(self):
+        """Test author's post is on the page but not author's and group posts are not"""
+
+        sub_post = Post.objects.create(
+            author=self.first_user,
+            only_for_group=False,
+            title='Title',
+            description='Description'
+        )
+        not_sub_post = Post.objects.create(
+            author=self.second_user,
+            only_for_group=False,
+            title='Title2',
+            description='Description2'
+        )
+        group_post = Post.objects.create(
+            author=self.first_user,
+            only_for_group=True,
+            title='Title3',
+            description='Description3'
+        )
+
+        response = self.client.get(reverse_lazy('subscriptions_posts'))
+
+        self.assertIn(sub_post, response.context['posts'], "Author's post isn't in the subscriptions page's context")
+        self.assertNotIn(group_post, response.context['posts'], "Group post is in the subscriptions page's context")
+        self.assertNotIn(
+            not_sub_post,
+            response.context['posts'],
+            "Not author's post is in the subscriptions page's context"
+        )

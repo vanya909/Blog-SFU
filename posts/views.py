@@ -8,6 +8,11 @@ from .models import Post, Comment
 from .forms import PostCreationForm, CommentCreationForm
 
 
+def get_objects_on_page(request, all_objects_list, page_capacity):
+    paginator = Paginator(all_objects_list, page_capacity)
+    return paginator.get_page(request.GET.get('page'))
+
+
 def post_detail_view(request, pk):
     post = Post.objects.get(pk=pk)
     if post.only_for_group and post.author != request.user:
@@ -141,11 +146,6 @@ def comment_delete_view(request, post_pk, comment_pk):
         comment.delete()
         return redirect('post_detail', pk=post_pk)
     return render(request, 'posts/comment_templates/comment_delete.html')
-
-
-def get_objects_on_page(request, all_objects_list, page_capacity):
-    paginator = Paginator(all_objects_list, page_capacity)
-    return paginator.get_page(request.GET.get('page'))
 
 
 @login_required(login_url='/users/login/')
