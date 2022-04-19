@@ -218,7 +218,87 @@ class PostCreateViewTest(TestCase):
             Post.objects.filter(
                 author=self.user,
                 only_for_group=data['only_for_group'],
-                description=data['description']
+                description=data['description'],
+                pk=1
             ).exists(),
             msg="Created post doesn't exists"
         )
+
+
+class PostEditViewTest(TestCase):
+    """Test post edit page"""
+    def setUp(self):
+        """Create two test users and test post"""
+        self.first_user = get_test_user('firstuser', '12345678', 'ABC')
+        self.second_user = get_test_user('seconduser', '12345678', 'ABC')
+
+        self.client.login(username='firstuser', password='12345678')
+        self.client.post(reverse_lazy('create_post'), {'description': 'abc', 'only_for_group': False})
+
+    def test_post_edit_status_code(self):
+        """Test page status code is 200"""
+        response = self.client.get('/posts/1/edit/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_edit_status_code_reverse_lazy(self):
+        """Test page status code using reverse_lazy() is 200"""
+        response = self.client.get(reverse_lazy('post_edit', kwargs={'post_pk': 1}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_edit_access(self):
+        """Test access to the page of the not author of the post"""
+        self.client.logout()
+        response = self.client.get(reverse_lazy('post_edit', kwargs={'post_pk': 1}))
+        self.assertNotEqual(response.status_code, 200, "Anonymous user have access to edit posts")
+
+        self.client.login(username='seconduser', password='12345678')
+        response = self.client.get(reverse_lazy('post_edit', kwargs={'post_pk': 1}))
+        self.assertNotEqual(response.status_code, 200, "User have access to edit someone else's post")
+
+    def test_post_edit(self):
+        """Test post edit"""
+        self.assertTrue(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+        self.assertFalse(Post.objects.filter(description='def', author=self.first_user, pk=1).exists())
+
+        data = {'description': 'def', 'only_for_group': False}
+        self.client.post(reverse_lazy('post_edit', kwargs={'post_pk': 1}), data)
+
+        self.assertFalse(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+        self.assertTrue(Post.objects.filter(description='def', author=self.first_user, pk=1).exists())
+
+
+class PostDeleteViewTest(TestCase):
+    """Test post delete page"""
+    def setUp(self):
+        """Create two test users and test post"""
+        self.first_user = get_test_user('firstuser', '12345678', 'ABC')
+        self.second_user = get_test_user('seconduser', '12345678', 'ABC')
+
+        self.client.login(username='firstuser', password='12345678')
+        self.client.post(reverse_lazy('create_post'), {'description': 'abc', 'only_for_group': False})
+
+    def test_post_delete_status_code(self):
+        """Test page status code is 200"""
+        response = self.client.get('/posts/1/delete/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_delete_status_code_reverse_lazy(self):
+        """Test page status code using reverse_lazy() is 200"""
+        response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_edit_access(self):
+        """Test access to the page of the not author of the post"""
+        self.client.logout()
+        response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
+        self.assertNotEqual(response.status_code, 200, "Anonymous user have access to delete posts")
+
+        self.client.login(username='seconduser', password='12345678')
+        response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
+        self.assertNotEqual(response.status_code, 200, "User have access to delete someone else's post")
+
+    def test_post_delete(self):
+        """Test post deletion"""
+        self.assertTrue(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+        self.client.post(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
+        self.assertFalse(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
