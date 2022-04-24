@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
 from users.models import StudyGroup, Follow
-from .models import Post
+from .models import Post, Comment
 
 
 def get_test_user(username, password, group_title):
@@ -287,7 +287,7 @@ class PostDeleteViewTest(TestCase):
         response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
         self.assertEqual(response.status_code, 200)
 
-    def test_post_edit_access(self):
+    def test_post_delete_access(self):
         """Test access to the page of the not author of the post"""
         self.client.logout()
         response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
@@ -302,3 +302,49 @@ class PostDeleteViewTest(TestCase):
         self.assertTrue(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
         self.client.post(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
         self.assertFalse(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+
+
+class CommentCreateViewTest(TestCase):
+    """Test comment creation page"""
+    def setUp(self):
+        """Create test user"""
+        self.user = get_test_user('testuser', '12345678', 'ABC')
+        self.client.login(username='testuser', password='12345678')
+
+        data = {'description': 'abc', 'only_for_group': False}
+        self.client.post(reverse_lazy('create_post'), data)
+
+    def test_comment_create_status_code(self):
+        """Test page status code is 200"""
+        response = self.client.get('/posts/1/comment/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_create_status_code_reverse_lazy(self):
+        """Test page status code using reverse_lazy() is 200"""
+        response = self.client.get(reverse_lazy('comment_create', kwargs={'post_pk': 1}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_create_status_code_with_and_without_login(self):
+        """Test page status code is 200 when logged in and isn't 200 when not"""
+        response = self.client.get(reverse_lazy('comment_create', kwargs={'post_pk': 1}))
+        self.assertEqual(response.status_code, 200, "Comment creation page status code isn't 200 when logged in")
+
+        self.client.logout()
+
+        response = self.client.get(reverse_lazy('comment_create', kwargs={'post_pk': 1}))
+        self.assertNotEqual(response.status_code, 200, "Comment creation page status code is 200 when logged out")
+
+    def test_comment_creation(self):
+        """Test comment creation"""
+        data = {'text': 'Comment'}
+        response = self.client.post(reverse_lazy('comment_create', kwargs={'post_pk': 1}), data)
+
+        self.assertEqual(response.status_code, 302, "Don't redirect after comment creation")
+        self.assertTrue(
+            Comment.objects.filter(
+                author=self.user,
+                post__pk=1,
+                text='Comment'
+            ).exists(),
+            msg="Created comment doesn't exists"
+        )
