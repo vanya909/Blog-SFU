@@ -64,7 +64,6 @@ def post_create_view(request):
     if form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
-        post.title = request.user.username
         post.save()
         return redirect('index')
     form = PostCreationForm()

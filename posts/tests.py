@@ -26,7 +26,6 @@ class PostDetailViewTest(TestCase):
         post = Post.objects.create(
             author=self.first_user,
             only_for_group=False,
-            title='SimpleTitle',
             description='SimpleDescription',
         )
 
@@ -38,7 +37,6 @@ class PostDetailViewTest(TestCase):
         post = Post.objects.create(
             author=self.first_user,
             only_for_group=False,
-            title='SimpleTitle',
             description='SimpleDescription',
         )
 
@@ -50,7 +48,6 @@ class PostDetailViewTest(TestCase):
         own_group_post = Post.objects.create(
             author=self.first_user,
             only_for_group=True,
-            title='SimpleTitle',
             description='SimpleDescription',
         )
 
@@ -62,7 +59,6 @@ class PostDetailViewTest(TestCase):
         another_group_post = Post.objects.create(
             author=self.second_user,
             only_for_group=True,
-            title='SimpleTitle',
             description='SimpleDescription',
         )
 
@@ -102,13 +98,11 @@ class StudyGroupPostsViewTest(TestCase):
         group_post = Post.objects.create(
             author=self.test_user,
             only_for_group=True,
-            title='Title',
             description='Description'
         )
         public_post = Post.objects.create(
             author=self.test_user,
             only_for_group=False,
-            title='Title',
             description='Description'
         )
 
@@ -154,19 +148,16 @@ class SubscriptionsPostsViewTest(TestCase):
         sub_post = Post.objects.create(
             author=self.first_user,
             only_for_group=False,
-            title='Title',
             description='Description'
         )
         not_sub_post = Post.objects.create(
             author=self.second_user,
             only_for_group=False,
-            title='Title2',
             description='Description2'
         )
         group_post = Post.objects.create(
             author=self.first_user,
             only_for_group=True,
-            title='Title3',
             description='Description3'
         )
 
