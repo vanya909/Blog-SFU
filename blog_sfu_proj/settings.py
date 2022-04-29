@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'posts.apps.PostsConfig',
     'users',
+    
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
