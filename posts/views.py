@@ -15,7 +15,7 @@ def get_objects_on_page(request, all_objects_list, page_capacity):
 
 def post_detail_view(request, pk):
     post = Post.objects.get(pk=pk)
-    if post.only_for_group and post.author != request.user:
+    if post.only_for_group and post.author.group != request.user.group:
         return HttpResponseNotFound()
     return render(request, 'posts/post_templates/post_detail.html', {'post': post, 'comments': post.comments.all()})
 

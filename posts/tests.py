@@ -16,10 +16,11 @@ class PostDetailViewTest(TestCase):
     """Test post detail page"""
     def setUp(self):
         """Create two users. First will be logged in and second will not"""
+        self.test_user = get_test_user('testuser', '12345678', 'ABC')
         self.first_user = get_test_user('firstuser', '12345678', 'ABC')
         self.second_user = get_test_user('seconduser', '12345678', 'BCA')
 
-        self.client.login(username='firstuser', password='12345678')
+        self.client.login(username='testuser', password='12345678')
 
     def test_post_detail_status_code(self):
         """Test page status code is 200"""
