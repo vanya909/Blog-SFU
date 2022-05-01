@@ -1,3 +1,4 @@
+"""Posts views tests"""
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
@@ -42,7 +43,10 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': post.pk}))
-        self.assertEqual(response.status_code, 200, "Detail page status code using reverse_lazy() isn't 200")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Detail page status code using reverse_lazy() isn't 200"
+        )
 
     def test_own_group_post_detail_status_code(self):
         """Test own group post detail page status code is 200"""
@@ -52,8 +56,13 @@ class PostDetailViewTest(TestCase):
             description='SimpleDescription',
         )
 
-        response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': own_group_post.pk}))
-        self.assertEqual(response.status_code, 200, "Own group post's detail page status code isn't 200")
+        response = self.client.get(
+            reverse_lazy('post_detail', kwargs={'pk': own_group_post.pk})
+        )
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Own group post's detail page status code isn't 200"
+        )
 
     def test_another_group_post_detail_status_code(self):
         """Test another group post detail page status code is not 200"""
@@ -63,8 +72,13 @@ class PostDetailViewTest(TestCase):
             description='SimpleDescription',
         )
 
-        response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': another_group_post.pk}))
-        self.assertNotEqual(response.status_code, 200, "Another group post's detail page status code is 200")
+        response = self.client.get(
+            reverse_lazy('post_detail', kwargs={'pk': another_group_post.pk})
+        )
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Another group post's detail page status code is 200"
+        )
 
 
 class StudyGroupPostsViewTest(TestCase):
@@ -77,22 +91,34 @@ class StudyGroupPostsViewTest(TestCase):
     def test_study_group_posts_status_code(self):
         """Test page status code is 200"""
         response = self.client.get('/posts/group/')
-        self.assertEqual(response.status_code, 200, "Study group posts page status code isn't 200")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Study group posts page status code isn't 200"
+        )
 
     def test_study_group_posts_status_code_reverse_lazy(self):
         """Test page status code using reverse_lazy() is 200"""
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertEqual(response.status_code, 200, "Study group posts page status code using reverse_lazy() isn't 200")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Study group posts page status code using reverse_lazy() isn't 200"
+        )
 
     def test_study_group_posts_status_code_with_and_without_login(self):
         """Test page status code is 200 when logged in and isn't 200 when not"""
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertEqual(response.status_code, 200, "Study group posts page status code isn't 200 when logged in")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Study group posts page status code isn't 200 when logged in"
+        )
 
         self.client.logout()
 
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertNotEqual(response.status_code, 200, "Study group posts page status code is 200 when logged out")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Study group posts page status code is 200 when logged out"
+        )
 
     def test_content_on_study_group_posts_page(self):
         """Test group post is on the page and public post is not"""
@@ -108,17 +134,35 @@ class StudyGroupPostsViewTest(TestCase):
         )
 
         response = self.client.get(reverse_lazy('study_group_posts'))
-        self.assertIn(group_post, response.context['posts'], "Group post isn't in the study group page's context")
-        self.assertNotIn(public_post, response.context['posts'], "Public post is in the study group page's context")
+        self.assertIn(
+            group_post, response.context['posts'],
+            msg="Group post isn't in the study group page's context"
+        )
+        self.assertNotIn(
+            public_post, response.context['posts'],
+            msg="Public post is in the study group page's context"
+        )
 
 
 class SubscriptionsPostsViewTest(TestCase):
     """Test subscriptions page"""
     def setUp(self):
         """Create test users and subscription"""
-        self.main_user = get_test_user(username='mainuser', password='12345678', group_title='ABC')
-        self.first_user = get_test_user(username='firstuser', password='12345678', group_title='ABC')
-        self.second_user = get_test_user(username='seconduser', password='12345678', group_title='ABC')
+        self.main_user = get_test_user(
+            username='mainuser',
+            password='12345678',
+            group_title='ABC'
+        )
+        self.first_user = get_test_user(
+            username='firstuser',
+            password='12345678',
+            group_title='ABC'
+        )
+        self.second_user = get_test_user(
+            username='seconduser',
+            password='12345678',
+            group_title='ABC'
+        )
 
         Follow.objects.create(user=self.main_user, author=self.first_user)
 
@@ -127,22 +171,34 @@ class SubscriptionsPostsViewTest(TestCase):
     def test_subscriptions_status_code(self):
         """Test page status code is 200"""
         response = self.client.get('/posts/subscriptions/')
-        self.assertEqual(response.status_code, 200, "Subscriptions page status code isn't 200")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Subscriptions page status code isn't 200"
+        )
 
     def test_subscriptions_status_code_reverse_lazy(self):
         """Test page status code using reverse_lazy() is 200"""
         response = self.client.get(reverse_lazy('subscriptions_posts'))
-        self.assertEqual(response.status_code, 200, "Subscriptions page status code using reverse_lazy() isn't 200")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Subscriptions page status code using reverse_lazy() isn't 200"
+        )
 
     def test_subscriptions_status_code_with_and_without_login(self):
         """Test page status code is 200 when logged in and isn't 200 when not"""
         response = self.client.get(reverse_lazy('subscriptions_posts'))
-        self.assertEqual(response.status_code, 200, "Subscriptions page status code isn't 200 when logged in")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Subscriptions page status code isn't 200 when logged in"
+        )
 
         self.client.logout()
 
         response = self.client.get(reverse_lazy('subscriptions_posts'))
-        self.assertNotEqual(response.status_code, 200, "Subscriptions page status code is 200 when logged out")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Subscriptions page status code is 200 when logged out"
+        )
 
     def test_content_on_subscriptions_page(self):
         """Test author's post is on the page but not author's and group posts are not"""
@@ -164,8 +220,14 @@ class SubscriptionsPostsViewTest(TestCase):
 
         response = self.client.get(reverse_lazy('subscriptions_posts'))
 
-        self.assertIn(sub_post, response.context['posts'], "Author's post isn't in the subscriptions page's context")
-        self.assertNotIn(group_post, response.context['posts'], "Group post is in the subscriptions page's context")
+        self.assertIn(
+            sub_post, response.context['posts'],
+            msg="Author's post isn't in the subscriptions page's context"
+        )
+        self.assertNotIn(
+            group_post, response.context['posts'],
+            msg="Group post is in the subscriptions page's context"
+        )
         self.assertNotIn(
             not_sub_post,
             response.context['posts'],
@@ -193,19 +255,28 @@ class PostCreateViewTest(TestCase):
     def test_post_create_status_code_with_and_without_login(self):
         """Test page status code is 200 when logged in and isn't 200 when not"""
         response = self.client.get(reverse_lazy('create_post'))
-        self.assertEqual(response.status_code, 200, "Post creation page status code isn't 200 when logged in")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Post creation page status code isn't 200 when logged in"
+        )
 
         self.client.logout()
 
         response = self.client.get(reverse_lazy('create_post'))
-        self.assertNotEqual(response.status_code, 200, "Post creation page status code is 200 when logged out")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Post creation page status code is 200 when logged out"
+        )
 
     def test_post_creation(self):
         """Test post creation"""
         data = {'description': 'Post1', 'only_for_group': False}
         response = self.client.post(reverse_lazy('create_post'), data)
 
-        self.assertEqual(response.status_code, 302, "Don't redirect after post creation")
+        self.assertEqual(
+            response.status_code, 302,
+            msg="Don't redirect after post creation"
+        )
         self.assertTrue(
             Post.objects.filter(
                 author=self.user,
@@ -225,7 +296,10 @@ class PostEditViewTest(TestCase):
         self.second_user = get_test_user('seconduser', '12345678', 'ABC')
 
         self.client.login(username='firstuser', password='12345678')
-        self.client.post(reverse_lazy('create_post'), {'description': 'abc', 'only_for_group': False})
+        self.client.post(
+            reverse_lazy('create_post'),
+            {'description': 'abc', 'only_for_group': False}
+        )
 
     def test_post_edit_status_code(self):
         """Test page status code is 200"""
@@ -241,22 +315,36 @@ class PostEditViewTest(TestCase):
         """Test access to the page of the not author of the post"""
         self.client.logout()
         response = self.client.get(reverse_lazy('post_edit', kwargs={'post_pk': 1}))
-        self.assertNotEqual(response.status_code, 200, "Anonymous user have access to edit posts")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Anonymous user have access to edit posts"
+        )
 
         self.client.login(username='seconduser', password='12345678')
         response = self.client.get(reverse_lazy('post_edit', kwargs={'post_pk': 1}))
-        self.assertNotEqual(response.status_code, 200, "User have access to edit someone else's post")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="User have access to edit someone else's post"
+        )
 
     def test_post_edit(self):
         """Test post edit"""
-        self.assertTrue(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
-        self.assertFalse(Post.objects.filter(description='def', author=self.first_user, pk=1).exists())
+        self.assertTrue(
+            Post.objects.filter(description='abc', author=self.first_user, pk=1).exists()
+        )
+        self.assertFalse(
+            Post.objects.filter(description='def', author=self.first_user, pk=1).exists()
+        )
 
         data = {'description': 'def', 'only_for_group': False}
         self.client.post(reverse_lazy('post_edit', kwargs={'post_pk': 1}), data)
 
-        self.assertFalse(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
-        self.assertTrue(Post.objects.filter(description='def', author=self.first_user, pk=1).exists())
+        self.assertFalse(
+            Post.objects.filter(description='abc', author=self.first_user, pk=1).exists()
+        )
+        self.assertTrue(
+            Post.objects.filter(description='def', author=self.first_user, pk=1).exists()
+        )
 
 
 class PostDeleteViewTest(TestCase):
@@ -267,7 +355,10 @@ class PostDeleteViewTest(TestCase):
         self.second_user = get_test_user('seconduser', '12345678', 'ABC')
 
         self.client.login(username='firstuser', password='12345678')
-        self.client.post(reverse_lazy('create_post'), {'description': 'abc', 'only_for_group': False})
+        self.client.post(
+            reverse_lazy('create_post'),
+            {'description': 'abc', 'only_for_group': False}
+        )
 
     def test_post_delete_status_code(self):
         """Test page status code is 200"""
@@ -283,17 +374,29 @@ class PostDeleteViewTest(TestCase):
         """Test access to the page of the not author of the post"""
         self.client.logout()
         response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
-        self.assertNotEqual(response.status_code, 200, "Anonymous user have access to delete posts")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Anonymous user have access to delete posts"
+        )
 
         self.client.login(username='seconduser', password='12345678')
         response = self.client.get(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
-        self.assertNotEqual(response.status_code, 200, "User have access to delete someone else's post")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="User have access to delete someone else's post"
+        )
 
     def test_post_delete(self):
         """Test post deletion"""
-        self.assertTrue(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+        self.assertTrue(
+            Post.objects.filter(description='abc', author=self.first_user, pk=1).exists()
+        )
+
         self.client.post(reverse_lazy('post_delete', kwargs={'post_pk': 1}))
-        self.assertFalse(Post.objects.filter(description='abc', author=self.first_user, pk=1).exists())
+
+        self.assertFalse(
+            Post.objects.filter(description='abc', author=self.first_user, pk=1).exists()
+        )
 
 
 class CommentCreateViewTest(TestCase):
@@ -319,19 +422,28 @@ class CommentCreateViewTest(TestCase):
     def test_comment_create_status_code_with_and_without_login(self):
         """Test page status code is 200 when logged in and isn't 200 when not"""
         response = self.client.get(reverse_lazy('comment_create', kwargs={'post_pk': 1}))
-        self.assertEqual(response.status_code, 200, "Comment creation page status code isn't 200 when logged in")
+        self.assertEqual(
+            response.status_code, 200,
+            msg="Comment creation page status code isn't 200 when logged in"
+        )
 
         self.client.logout()
 
         response = self.client.get(reverse_lazy('comment_create', kwargs={'post_pk': 1}))
-        self.assertNotEqual(response.status_code, 200, "Comment creation page status code is 200 when logged out")
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Comment creation page status code is 200 when logged out"
+        )
 
     def test_comment_creation(self):
         """Test comment creation"""
         data = {'text': 'Comment'}
         response = self.client.post(reverse_lazy('comment_create', kwargs={'post_pk': 1}), data)
 
-        self.assertEqual(response.status_code, 302, "Don't redirect after comment creation")
+        self.assertEqual(
+            response.status_code, 302,
+            msg="Don't redirect after comment creation"
+        )
         self.assertTrue(
             Comment.objects.filter(
                 author=self.user,
@@ -339,4 +451,98 @@ class CommentCreateViewTest(TestCase):
                 text='Comment'
             ).exists(),
             msg="Created comment doesn't exists"
+        )
+
+
+class CommentEditViewTest(TestCase):
+    """Test comment editing page"""
+    def setUp(self):
+        """Create test user, post and comment"""
+        self.comment_author = get_test_user('testuser', '12345678', 'ABC')
+        self.second_user = get_test_user('seconduser', '12345678', 'ABC')
+        self.client.login(username='testuser', password='12345678')
+
+        self.post = Post.objects.create(
+            author=self.second_user,
+            description='Test post',
+            only_for_group=False
+        )
+        self.comment = Comment.objects.create(
+            post=self.post,
+            author=self.comment_author,
+            text='Before Editing'
+        )
+
+    def test_comment_edit_status_code(self):
+        """Test page status code is 200"""
+        response = self.client.get('/posts/1/comment/1/edit/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_edit_status_code_reverse_lazy(self):
+        """Test page status code using reverse_lazy() is 200"""
+        response = self.client.get(
+            reverse_lazy('comment_edit', kwargs={'post_pk': 1, 'comment_pk': 1})
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_edit_status_code_with_and_without_login(self):
+        """Test page status code isn't 200 when user is anonymous or not the author"""
+        self.client.logout()
+
+        response = self.client.get(
+            reverse_lazy('comment_edit', kwargs={'post_pk': 1, 'comment_pk': 1})
+        )
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Comment editing page status code is 200 when logged out"
+        )
+
+        self.client.login(username='seconduser', password='12345678')
+
+        response = self.client.get(
+            reverse_lazy('comment_edit', kwargs={'post_pk': 1, 'comment_pk': 1})
+        )
+        self.assertNotEqual(
+            response.status_code, 200,
+            msg="Comment editing page status code is 200 when another user is logged in"
+        )
+
+    def test_comment_editing(self):
+        """Test comment editing"""
+        self.assertTrue(
+            Comment.objects.filter(
+                author=self.comment_author,
+                pk=1,
+                post__pk=1,
+                text='Before Editing'
+            ).exists(),
+            msg="Comment doesn't exists"
+        )
+
+        response = self.client.post(
+            reverse_lazy('comment_edit', kwargs={'post_pk': 1, 'comment_pk': 1}),
+            {'text': 'After Editing'}
+        )
+
+        self.assertEqual(
+            response.status_code, 302,
+            msg="Don't redirect after comment editing"
+        )
+        self.assertTrue(
+            Comment.objects.filter(
+                author=self.comment_author,
+                pk=1,
+                post__pk=1,
+                text='After Editing'
+            ).exists(),
+            msg="Comment wasn't edited"
+        )
+        self.assertFalse(
+            Comment.objects.filter(
+                author=self.comment_author,
+                pk=1,
+                post__pk=1,
+                text='Before Editing'
+            ).exists(),
+            msg="Comment wasn't edited"
         )
