@@ -3,6 +3,7 @@
 {% block post_button %}
     <a class="btn btn-primary" href="{% url 'comment_create' post_pk=post.pk %}">Оставить комментарий</a>
     {% if user == post.author %}
+        <a class="btn btn-outline-warning ms-2" href="{% url 'post_edit' post_pk=post.pk %}">Редактировать пост</a>
         <a class="btn btn-outline-danger ms-2" href="{% url 'post_delete' post_pk=post.pk %}">Удалить пост</a>
     {% endif %}
 {% endblock post_button %}
