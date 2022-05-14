@@ -37,24 +37,29 @@ class IndexPageSearchTestCase(TestCase):
     """Test search on index page"""
     def setUp(self):
         """Creating test user and posts"""
-        self.test_user = get_test_user('testuser', '12345678', 'ABC')
+        self.first_user = get_test_user('firstuser', '12345678', 'FirstGroup')
+        self.second_user = get_test_user('seconduser', '12345678', 'SecondGroup')
+        self.client.login(username='firstuser', password='12345678')
 
         self.first_post = Post.objects.create(
-            author=self.test_user,
+            author=self.first_user,
             only_for_group=False,
             description='First Post',
         )
-
         self.second_post = Post.objects.create(
-            author=self.test_user,
+            author=self.second_user,
             only_for_group=False,
             description='Second Post',
         )
-
         self.first_post_only_for_group = Post.objects.create(
-            author=self.test_user,
+            author=self.first_user,
             only_for_group=True,
             description='First Post',
+        )
+        self.second_post_only_for_group = Post.objects.create(
+            author=self.second_user,
+            only_for_group=True,
+            description='Second Post',
         )
 
     def test_page_title(self):
