@@ -68,9 +68,20 @@ class IndexPageSearchTestCase(TestCase):
 
         self.assertIn(self.first_post, response.context['posts'],
                       msg="Proper post isn't in the context")
-
+        self.assertIn(self.first_post_only_for_group, response.context['posts'],
+                      msg="Proper post isn't in the context")
         self.assertNotIn(self.second_post, response.context['posts'],
                          msg="Post that doesn't match the request is in the context")
+        self.assertNotIn(self.second_post_only_for_group, response.context['posts'],
+                         msg="Post that doesn't match the request is in the context")
 
+        response = self.client.get(f"{reverse_lazy('index')}?search=second")
+
+        self.assertIn(self.second_post, response.context['posts'],
+                      msg="Proper post isn't in the context")
+        self.assertNotIn(self.first_post, response.context['posts'],
+                         msg="Post that doesn't match the request is in the context")
         self.assertNotIn(self.first_post_only_for_group, response.context['posts'],
-                         msg="Not public post is in the context")
+                         msg="Post that doesn't match the request is in the context")
+        self.assertNotIn(self.second_post_only_for_group, response.context['posts'],
+                         msg="Other group post is in the context")
