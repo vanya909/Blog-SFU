@@ -27,4 +27,12 @@ def index_view(request):
         page_capacity=settings.MAX_POSTS_PER_PAGE
     )
 
-    return render(request, 'pages/index.html', context={'posts': posts, 'page_title': page_title})
+    return render(
+        request,
+        'pages/index.html',
+        context={
+            'posts': posts,
+            'page_title': page_title,
+            'search_request': search_request
+        }
+    )

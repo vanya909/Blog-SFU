@@ -6,6 +6,7 @@ from django.conf import settings
 
 from .models import Post, Comment, Like
 from .forms import PostCreationForm, CommentCreationForm
+from users.models import User
 
 
 def get_objects_on_page(request, all_objects_list, page_capacity):
@@ -40,17 +41,41 @@ def study_group_posts_view(request):
 @login_required(login_url='/users/login/')
 def subscriptions_posts_view(request):
     user = request.user
-    posts_ids = [post.id for subscription in user.following.all() for post in subscription.author.posts.all()]
+
+    user_subscription_authors = [sub.author for sub in user.following.all()]
 
     posts = get_objects_on_page(
         request=request,
-        all_objects_list=Post.objects.filter(id__in=posts_ids).filter(only_for_group=False).order_by('-pub_date'),
+        all_objects_list=Post.objects.filter(
+            author__in=user_subscription_authors
+        ).filter(only_for_group=False).order_by('-pub_date'),
         page_capacity=settings.MAX_POSTS_PER_PAGE
     )
 
     context = {
         'user': user,
         'posts': posts,
+        'authors': user_subscription_authors,
+    }
+    return render(request, 'posts/subscriptions_posts.html', context)
+
+
+@login_required(login_url='/users/login/')
+def subscriptions_user_posts_view(request, username):
+    author = get_object_or_404(User, username=username)
+
+    authors = [sub.author for sub in request.user.following.all()]
+
+    posts = get_objects_on_page(
+        request=request,
+        all_objects_list=author.posts.all().filter(only_for_group=False).order_by('-pub_date'),
+        page_capacity=settings.MAX_POSTS_PER_PAGE
+    )
+
+    context = {
+        'author': author,
+        'posts': posts,
+        'authors': authors,
     }
     return render(request, 'posts/subscriptions_posts.html', context)
 
