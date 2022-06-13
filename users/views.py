@@ -28,7 +28,7 @@ def signup_view(request):
 
 
 def profile_view(request, username):
-    user = get_object_or_404(get_user_model(), username=username)
+    user = get_object_or_404(User, username=username)
     following = user.followers.filter(user=request.user.id).exists()
     followers_count = user.followers.count()
     posts_count = user.posts.count()

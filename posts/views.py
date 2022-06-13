@@ -18,7 +18,12 @@ def post_detail_view(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if post.only_for_group and post.author.group != request.user.group:
         return HttpResponseNotFound()
-    return render(request, 'posts/post_templates/post_detail.html', {'post': post, 'comments': post.comments.all()})
+    comments = post.comments.all()
+    context = {
+        'post': post,
+        'comments': comments,
+    }
+    return render(request, 'posts/post_templates/post_detail.html', context)
 
 
 @login_required(login_url='/users/login/')
@@ -42,20 +47,18 @@ def study_group_posts_view(request):
 def subscriptions_posts_view(request):
     user = request.user
 
-    user_subscription_authors = [sub.author for sub in user.following.all()]
+    authors = [sub.author for sub in user.following.all()]
 
     posts = get_objects_on_page(
         request=request,
-        all_objects_list=Post.objects.filter(
-            author__in=user_subscription_authors
-        ).filter(only_for_group=False).order_by('-pub_date'),
+        all_objects_list=Post.objects.filter(author__in=authors).filter(only_for_group=False).order_by('-pub_date'),
         page_capacity=settings.MAX_POSTS_PER_PAGE
     )
 
     context = {
         'user': user,
         'posts': posts,
-        'authors': user_subscription_authors,
+        'authors': authors,
     }
     return render(request, 'posts/subscriptions_posts.html', context)
 
@@ -129,8 +132,11 @@ def post_delete_view(request, post_pk):
         return HttpResponseNotFound()
     if request.method == 'POST':
         post.delete()
-        return redirect('/')
-    return render(request, 'posts/post_templates/post_delete.html', {'pk': post_pk})
+        return redirect('index')
+    context = {
+        'pk': post_pk
+    }
+    return render(request, 'posts/post_templates/post_delete.html', context)
 
 
 @login_required(login_url='/users/login/')
@@ -142,7 +148,7 @@ def comment_create_view(request, post_pk):
             comment.author = request.user
             comment.post = get_object_or_404(Post, pk=post_pk)
             comment.save()
-            return redirect('post_detail', pk=post_pk)
+            return redirect('post_detail', post_pk=post_pk)
     form = CommentCreationForm()
     context = {'form': form}
     return render(request, 'posts/comment_templates/comment_create.html', context)
@@ -157,7 +163,7 @@ def comment_edit_view(request, post_pk, comment_pk):
         form = CommentCreationForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            return redirect('post_detail', pk=post_pk)
+            return redirect('post_detail', post_pk=post_pk)
     return render(request, 'posts/comment_templates/comment_edit.html')
 
 
@@ -168,7 +174,7 @@ def comment_delete_view(request, post_pk, comment_pk):
         return HttpResponseNotFound()
     if request.method == 'POST':
         comment.delete()
-        return redirect('post_detail', pk=post_pk)
+        return redirect('post_detail', post_pk=post_pk)
     return render(request, 'posts/comment_templates/comment_delete.html')
 
 
