@@ -22,7 +22,7 @@
                     {{ post.likes.count }} &#10084;
                 </a>
                 {% block post_button %}
-                    <a class="btn btn-outline-primary" href="{% url 'post_detail' pk=post.pk %}">Перейти к посту</a>
+                    <a class="btn btn-outline-primary" href="{% url 'post_detail' post_pk=post.pk %}">Перейти к посту</a>
                 {% endblock post_button %}
             </div>
             <small class="text-muted">{{ post.pub_date }}</small>

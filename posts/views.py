@@ -14,8 +14,8 @@ def get_objects_on_page(request, all_objects_list, page_capacity):
     return paginator.get_page(request.GET.get('page'))
 
 
-def post_detail_view(request, pk):
-    post = Post.objects.get(pk=pk)
+def post_detail_view(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
     if post.only_for_group and post.author.group != request.user.group:
         return HttpResponseNotFound()
     return render(request, 'posts/post_templates/post_detail.html', {'post': post, 'comments': post.comments.all()})
@@ -182,3 +182,21 @@ def like_view(request, post_pk):
         Like.objects.filter(user=request.user, post=post).delete()
 
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+def page_not_found(request, exception):
+    return render(
+        request,
+        'posts/errors_pages/404.html',
+        {'path': request.path},
+        status=404
+    )
+
+
+def server_error(request):
+    return render(
+        request,
+        'posts/errors_pages/500.html',
+        status=500
+    )
+

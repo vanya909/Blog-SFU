@@ -5,7 +5,7 @@ from .views import (post_detail_view, subscriptions_posts_view, study_group_post
                     like_view, subscriptions_user_posts_view)
 
 urlpatterns = [
-    path('<int:pk>/', post_detail_view, name='post_detail'),
+    path('<int:post_pk>/', post_detail_view, name='post_detail'),
     path('<int:post_pk>/comment/', comment_create_view, name='comment_create'),
     path('<int:post_pk>/comment/<int:comment_pk>/edit/', comment_edit_view, name='comment_edit'),
     path('<int:post_pk>/comment/<int:comment_pk>/delete/', comment_delete_view, name='comment_delete'),

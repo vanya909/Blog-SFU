@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.db.models import Q
+from django.core.cache import cache
 
 from posts.models import Post
 from posts.views import get_objects_on_page
@@ -18,7 +19,10 @@ def index_view(request):
         relevant_posts = Post.objects.filter(complex_filter)
         page_title = 'Поиск'
     else:
-        relevant_posts = Post.objects.filter(only_for_group=False)
+        relevant_posts = cache.get('index_page')
+        if relevant_posts is None:
+            relevant_posts = Post.objects.filter(only_for_group=False)
+            cache.set('index_page', relevant_posts, timeout=20)
         page_title = 'Домашняя страница'
 
     posts = get_objects_on_page(
