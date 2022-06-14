@@ -42,7 +42,7 @@ class PostDetailViewTest(TestCase):
             description='SimpleDescription',
         )
 
-        response = self.client.get(reverse_lazy('post_detail', kwargs={'pk': post.pk}))
+        response = self.client.get(reverse_lazy('post_detail', kwargs={'post_pk': post.pk}))
         self.assertEqual(
             response.status_code, 200,
             msg="Detail page status code using reverse_lazy() isn't 200"
@@ -57,7 +57,7 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(
-            reverse_lazy('post_detail', kwargs={'pk': own_group_post.pk})
+            reverse_lazy('post_detail', kwargs={'post_pk': own_group_post.pk})
         )
         self.assertEqual(
             response.status_code, 200,
@@ -73,7 +73,7 @@ class PostDetailViewTest(TestCase):
         )
 
         response = self.client.get(
-            reverse_lazy('post_detail', kwargs={'pk': another_group_post.pk})
+            reverse_lazy('post_detail', kwargs={'post_pk': another_group_post.pk})
         )
         self.assertNotEqual(
             response.status_code, 200,

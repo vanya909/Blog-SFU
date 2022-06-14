@@ -105,7 +105,7 @@ def post_edit_view(request, post_pk):
     if post.author != request.user:
         return redirect(
             'post_detail',
-            pk=post_pk
+            post_pk=post_pk
         )
     form = PostCreationForm(
         request.POST or None,
@@ -115,7 +115,7 @@ def post_edit_view(request, post_pk):
         form.save()
         return redirect(
             'post_detail',
-            pk=post_pk
+            post_pk=post_pk
         )
     context = {
         'author': post.author,
