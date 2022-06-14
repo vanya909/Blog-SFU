@@ -32,3 +32,4 @@ for institut_count in range(0, len(institutions)):
         groups = driver.find_elements(By.CLASS_NAME, 'instItemGroupItem')
         groups_titles = [group.text for group in groups]
         groups_of_courses.append(groups_titles)
+        print(groups_titles)
