@@ -3,33 +3,41 @@ from selenium.webdriver.common.by import By
 import time
 
 
-path = 'http://newtimetable.sfu-kras.ru/main'
+def parse_all_groups():
+    path = 'http://newtimetable.sfu-kras.ru/main'
 
-driver = webdriver.Chrome('../chrome_driver_for_parse/chromedriver.exe')
-driver.get(path)
-
-institutions = driver.find_elements(By.CLASS_NAME, 'instItemHead')
-
-groups_of_courses = []
-
-for institut_count in range(0, len(institutions)):
-    js_script = f'document.getElementsByClassName("instItemContainer")[{institut_count}].click();'
+    driver = webdriver.Chrome('../chrome_driver_for_parse/chromedriver.exe')
+    driver.get(path)
 
     time.sleep(1)
 
-    driver.execute_script(js_script)
+    institutions = driver.find_elements(By.CLASS_NAME, 'instItemLabel')
+    print(len(institutions))
 
-    time.sleep(1)
+    groups_of_courses = []
 
-    courses = driver.find_elements(By.CLASS_NAME, 'instItemCoursesItem')
-    for course_count in range(0, len(courses)):
-        js_script = f'document.getElementsByClassName("instItemCoursesItem")[{course_count}].click();'
+    for institute_count in range(len(institutions)):
+        js_script = f'document.getElementsByClassName("instItemContainer")[{institute_count}].click();'
 
-        time.sleep(1)
+        time.sleep(0.2)
 
         driver.execute_script(js_script)
 
-        groups = driver.find_elements(By.CLASS_NAME, 'instItemGroupItem')
-        groups_titles = [group.text for group in groups]
-        groups_of_courses.append(groups_titles)
-        print(groups_titles)
+        courses = driver.find_elements(By.CLASS_NAME, 'instItemCoursesItem')
+        for course_count in range(len(courses)):
+            js_script = f'document.getElementsByClassName("instItemCoursesItem")[{course_count}].click();'
+
+            time.sleep(0.2)
+
+            driver.execute_script(js_script)
+
+            groups = driver.find_elements(By.CLASS_NAME, 'instItemGroupItem')
+            groups_titles = [group.text.split(' ')[0] for group in groups]
+            groups_of_courses.append(groups_titles)
+            print(groups_titles)
+
+    driver.close()
+
+
+if __name__ == 'main':
+    parse_all_groups()
