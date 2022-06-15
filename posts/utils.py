@@ -37,6 +37,7 @@ def parse_all_groups():
             print(groups_titles)
 
     driver.close()
+    return groups_of_courses
 
 
 if __name__ == 'main':
