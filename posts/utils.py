@@ -1,18 +1,24 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 import time
 
 
-def parse_all_groups():
+def get_all_groups_sfu():
     path = 'http://newtimetable.sfu-kras.ru/main'
 
-    driver = webdriver.Chrome('../chrome_driver_for_parse/chromedriver.exe')
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get(path)
 
-    time.sleep(1)
+    time.sleep(2)
 
     institutions = driver.find_elements(By.CLASS_NAME, 'instItemLabel')
-    print(len(institutions))
+
+    print('parsing groups start')
 
     groups_of_courses = []
 
@@ -33,12 +39,8 @@ def parse_all_groups():
 
             groups = driver.find_elements(By.CLASS_NAME, 'instItemGroupItem')
             groups_titles = [group.text.split(' ')[0] for group in groups]
-            groups_of_courses.append(groups_titles)
-            print(groups_titles)
+            groups_of_courses += groups_titles
 
+    groups_of_courses = set(groups_of_courses)
     driver.close()
     return groups_of_courses
-
-
-if __name__ == 'main':
-    parse_all_groups()

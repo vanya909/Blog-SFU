@@ -8,7 +8,6 @@ class StudyGroup(models.Model):
         max_length=120,
         unique=True
     )
-    slug = models.SlugField(unique=True, verbose_name='слаг')
 
     class Meta:
         verbose_name = 'Учебная группа'
