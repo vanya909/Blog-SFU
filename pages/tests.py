@@ -8,7 +8,7 @@ from users.models import StudyGroup
 
 def get_test_user(username, password, group_title):
     """Function which returns a new user for tests"""
-    group = StudyGroup.objects.get_or_create(title=group_title, slug=group_title.lower())[0]
+    group = StudyGroup.objects.get_or_create(title=group_title)[0]
     return get_user_model().objects.create_user(username=username, password=password, group=group)
 
 
