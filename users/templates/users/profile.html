@@ -8,6 +8,7 @@
     <div class="card">
         <div class="mt-5 text-center">
             <h4 class="mb-0">{{ profile.username }}</h4>
+            <h4 class="text-muted d-block mb-2">{{ profile.get_full_name }}</h4>
             <span class="text-muted d-block mb-2">{{ profile.group }}</span>
             {% if user.username != profile.username %}
                 {% if following %}
