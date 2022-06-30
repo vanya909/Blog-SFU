@@ -13,7 +13,7 @@
         </p>
 
         {% if post.only_for_group and post.author.group %}
-            <strong class="d-block text-gray-dark">#{{ post.author.group }}</strong>
+            <strong class="d-block text-gray-dark">{{ post.author.group }}</strong>
         {% endif %}
 
         <div class="d-flex justify-content-between align-items-center">

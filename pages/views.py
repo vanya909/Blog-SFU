@@ -22,7 +22,7 @@ def index_view(request):
         relevant_posts = cache.get('index_page')
         if relevant_posts is None:
             relevant_posts = Post.objects.filter(only_for_group=False)
-            cache.set('index_page', relevant_posts, timeout=20)
+            cache.set('index_page', relevant_posts, timeout=0)
         page_title = 'Домашняя страница'
 
     posts = get_objects_on_page(

@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.utils.crypto import get_random_string
 from posts.utils import get_all_groups_sfu
 from users.models import StudyGroup
 

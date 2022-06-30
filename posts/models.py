@@ -2,6 +2,14 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 
+class Tag(models.Model):
+    title = models.CharField(
+        verbose_name='название',
+        max_length=120,
+        unique=True
+    )
+
+
 class Post(models.Model):
     author = models.ForeignKey(
         get_user_model(),
@@ -14,6 +22,7 @@ class Post(models.Model):
     description = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='дата публикации')
     update_date = models.DateTimeField(auto_now=True, db_index=True, verbose_name='дата обновления')
+    tags = models.ManyToManyField(Tag, related_name='posts')
 
     class Meta:
         verbose_name = 'Пост'
@@ -41,7 +50,7 @@ class Comment(models.Model):
 
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='likes')
 
     class Meta:
         verbose_name = 'Лайк'
