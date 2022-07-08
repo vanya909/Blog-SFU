@@ -4,11 +4,24 @@ from posts.models import Post
 from users.models import User, StudyGroup
 
 
+class GroupUserSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'second_name')
+
+
 class GroupSerializer(ModelSerializer):
+    # users = serializers.SlugRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     slug_field='username'
+    #  )
+    users = GroupUserSerializer(many=True)
 
     class Meta:
         model = StudyGroup
-        fields = '__all__'
+        fields = ('id', 'title', 'users')
 
 
 class UserSerializer(ModelSerializer):

@@ -12,13 +12,17 @@ def get_all_groups_sfu():
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.get(path)
+
+    try:
+        driver.get(path)
+    except:
+        print('Something went wrong')
 
     time.sleep(2)
 
     institutions = driver.find_elements(By.CLASS_NAME, 'instItemLabel')
 
-    print('parsing groups start')
+    print('Parsing groups start')
 
     groups_of_courses = []
 

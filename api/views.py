@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
@@ -9,13 +9,13 @@ from users.models import StudyGroup, User, Follow
 from .serializers import (PostSerializer, GroupSerializer,
                           UserSerializer, UserCreateSerializer,
                           PostCreateSerializer)
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, ReadOnly
 
 
 class PostsViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(only_for_group=False)
     serializer_class = PostSerializer
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly)
 
     def get_serializer_class(self):
         if self.action in ('create', 'update'):
@@ -27,6 +27,7 @@ class GroupsViewSet(viewsets.GenericViewSet,
                     mixins.ListModelMixin):
     queryset = StudyGroup.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (ReadOnly,)
 
 
 class UserViewSet(viewsets.ModelViewSet):
