@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -36,20 +37,17 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'pages.apps.PagesConfig',
-    'posts.apps.PostsConfig',
-    'users',
-    'djoser',
-    'rest_framework.authtoken',
-    
-    'rest_framework',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'pages',
+    'posts',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -150,13 +148,19 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # 'DEFAULT_PAGINATION_CLASS': 'api.paginations.PageLimitPagination',
-    # 'PAGE_SIZE': 6,
 }
 
-DJOSER = {
-    'SEND_ACTIVATION_EMAIL': False,
-    'LOGIN_FIELD': 'email',
-}
+if DEBUG:
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+        'ROTATE_REFRESH_TOKENS': True,
+    }
+else:
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+        'ROTATE_REFRESH_TOKENS': True,
+    }
