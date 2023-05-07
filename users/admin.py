@@ -14,4 +14,4 @@ class StudyGroupAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "author")
+    list_display = ("id", "user", "author", "__str__")
