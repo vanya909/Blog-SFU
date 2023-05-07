@@ -4,9 +4,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework import status
 
 from ..serializers import UserCreateSerializer, UserRetrieveSerializer
-from ...models import User
+from ...models import User, Follow
 
 
 class UsersViewSet(ModelViewSet):
@@ -20,7 +21,7 @@ class UsersViewSet(ModelViewSet):
             return UserRetrieveSerializer
 
     def get_permissions(self) -> tuple[BasePermission]:
-        if self.action == "me":
+        if self.action in ("me", "follow", "unfollow"):
             return (IsAuthenticated(),)
         return (AllowAny(),)
 
@@ -30,3 +31,35 @@ class UsersViewSet(ModelViewSet):
     )
     def me(self, request: Request) -> Response:
         return Response(UserRetrieveSerializer(request.user).data)
+
+    @action(
+        methods=("get",),
+        detail=True,
+    )
+    def follow(self, request: Request, pk=None) -> Response:
+        author = self.get_object()
+        if not Follow.objects.filter(
+            user=request.user,
+            author=author,
+        ).exists():
+            Follow.objects.create(
+                user=request.user,
+                author=author,
+            )
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @action(
+        methods=("get",),
+        detail=True,
+    )
+    def unfollow(self, request: Request, pk=None) -> Response:
+        author = self.get_object()
+        follow = Follow.objects.filter(
+            user=request.user,
+            author=author,
+        ).first()
+        if follow:
+            follow.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
