@@ -11,7 +11,8 @@ def index_view(request):
     search_request = request.GET.get('search')
 
     if search_request:
-        complex_filter = Q(description__icontains=search_request) | Q(author__username__icontains=search_request)
+        complex_filter = Q(description__icontains=search_request) \
+            | Q(author__username__icontains=search_request)
         if request.user.is_anonymous:
             complex_filter &= Q(only_for_group=False)
         else:
