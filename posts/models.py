@@ -34,7 +34,12 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name='comments', verbose_name='Комментарий', on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post,
+        related_name='comments',
+        verbose_name='Комментарий',
+        on_delete=models.CASCADE
+    )
     author = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     text = models.TextField(verbose_name='Текст комментария')
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -45,7 +50,7 @@ class Comment(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        return f'{self.post}, {self.author} - {self.text[:60]} ({self.pub_date.strftime("%Y-%m-%d %H:%M:%S")})'
+        return f'{self.post}, {self.author} - ({self.pub_date.strftime("%Y-%m-%d %H:%M:%S")})'
 
 
 class Like(models.Model):
@@ -57,4 +62,4 @@ class Like(models.Model):
         verbose_name_plural = 'Лайки'
 
     def __str__(self):
-        return f"{self.user} - {self.post}"
+        return f"{self.user} --> {self.post}"
